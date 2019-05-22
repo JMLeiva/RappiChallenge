@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">RappiChallenge</string>
+
+    <string name="lan_english">English</string>
 </resources>
