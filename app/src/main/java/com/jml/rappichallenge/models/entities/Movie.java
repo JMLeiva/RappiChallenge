@@ -1,4 +1,4 @@
-package com.jml.rappichallenge.models;
+package com.jml.rappichallenge.models.entities;
 
 import android.content.Context;
 
@@ -16,8 +16,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import androidx.annotation.StringRes;
 
 public class Movie
 {

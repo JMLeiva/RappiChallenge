@@ -1,4 +1,4 @@
-package com.jml.rappichallenge.models;
+package com.jml.rappichallenge.models.entities;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
