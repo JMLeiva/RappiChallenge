@@ -2,4 +2,7 @@
     <string name="app_name">RappiChallenge</string>
     <string name="author_splash">By Juan Martin Leiva</string>
     <string name="lan_english">English</string>
+    <string name="search_noConnectionTextTitle">It seems there\'s no internet!</string>
+    <string name="search_noConnectionTextBody">Check your intenet connection to keep browsing.</string>
+    <string name="retry">Retry</string>
 </resources>
