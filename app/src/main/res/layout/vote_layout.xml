@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fl_vote_container"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/black_circle_background">
+
+    <ProgressBar
+        android:id="@+id/pb_vote"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:progress="50"
+        android:layout_gravity="center"
+        android:rotation="270"
+        style="?android:progressBarStyleHorizontal"
+        android:progressDrawable="@drawable/determinate_circleprogress"
+        />
+
+    <TextView
+        android:id="@+id/tv_vote_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        style="@style/Text_Caption"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        tools:text="8.4"/>
+
+</FrameLayout>

@@ -16,11 +16,10 @@ import com.jml.rappichallenge.viewmodel.common.EntityListViewModel
 import javax.inject.Inject
 
 
-class SearchViewModel @Inject constructor(application: Application, moviesRepository: MoviesRepository) : EntityListViewModel<MovieSearchResponse?>(application) {
+class SearchViewModel @Inject constructor(application: Application, private val moviesRepository: MoviesRepository) : EntityListViewModel<MovieSearchResponse>(application) {
 
 
     private var searchQueryInput: MutableLiveData<SearchQuery>? = null
-    private val itemRepository: MoviesRepository = moviesRepository
     private val rawQuery: SearchQuery = SearchQuery.Builder().sorting(Sorting.Popularity).language(Language.English).build()
     private var currentResults: MovieSearchResponse? = null
 
@@ -47,18 +46,18 @@ class SearchViewModel @Inject constructor(application: Application, moviesReposi
         }
     }
 
-    override fun createDataObservable(): LiveData<MovieSearchResponse?> {
+    override fun createDataObservable(): LiveData<MovieSearchResponse> {
         searchQueryInput = MutableLiveData()
 
-        return Transformations.switchMap<SearchQuery, MovieSearchResponse?>(searchQueryInput!!) { query ->
+        return Transformations.switchMap<SearchQuery, MovieSearchResponse>(searchQueryInput!!) { query ->
             requestStateObservable.value = RequestState.Loading
             return@switchMap getTransformationLiveData(query)
         }
     }
 
-    private fun getTransformationLiveData(query: SearchQuery): LiveData<MovieSearchResponse?> {
+    private fun getTransformationLiveData(query: SearchQuery): LiveData<MovieSearchResponse> {
 
-        val searchLiveData = itemRepository.search(query)
+        val searchLiveData = moviesRepository.search(query)
 
         return Transformations.map(searchLiveData) { input ->
             if (input.isSuccessfull) {

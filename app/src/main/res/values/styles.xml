@@ -15,6 +15,12 @@
         <item name="goIcon">@drawable/ic_send_24dp</item>
     </style>
 
+    <style name="Text_Title">
+        <item name="android:textSize">32sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_dark</item>
+    </style>
+
     <style name="Text_Header5">
         <item name="android:textSize">24sp</item>
         <item name="android:textStyle">normal</item>
