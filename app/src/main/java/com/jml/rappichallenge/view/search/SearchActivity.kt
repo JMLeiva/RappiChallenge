@@ -1,5 +1,6 @@
 package com.jml.rappichallenge.view.search
 
+import android.os.Bundle
 import com.jml.rappichallenge.R
 import com.jml.rappichallenge.view.base.BaseActivity
 
@@ -16,5 +17,11 @@ class SearchActivity : BaseActivity() {
         val fragment = SearchFragment()
         val manager = supportFragmentManager
         manager.beginTransaction().replace(R.id.fragmentContainer, fragment, FRAGMENT_TAG).commit()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        supportActionBar?.title = getString(R.string.search_screen_title)
     }
 }

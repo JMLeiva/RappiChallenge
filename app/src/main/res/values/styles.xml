@@ -7,7 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-    <style name="AppTheme.Toolbar" parent="ThemeOverlay.AppCompat.Light">
+    <style name="AppTheme.Toolbar" parent="ThemeOverlay.AppCompat.Dark">
         <item name="searchViewStyle">@style/SearchView</item>
     </style>
 

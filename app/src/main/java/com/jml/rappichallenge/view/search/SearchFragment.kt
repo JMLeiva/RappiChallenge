@@ -109,8 +109,6 @@ class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator {
         })
     }
 
-
-
     override fun hasMoreData(): Boolean {
         val result = searchViewModel.searchResponse
         val finished = result?.isFinished ?: true
