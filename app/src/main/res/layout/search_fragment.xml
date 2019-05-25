@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:app="http://schemas.android.com/apk/res-auto"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:id="@+id/fl_conatainer"
              android:orientation="vertical"
              android:layout_width="match_parent"
              android:layout_height="match_parent">
@@ -14,18 +16,63 @@
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="gone"/>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swiperefresh"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone">
+        android:orientation="vertical"
+        android:background="@color/light_grey">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_list"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="56dp"
+            android:background="@color/white"
+            android:layout_marginBottom="12dp">
 
-        </androidx.recyclerview.widget.RecyclerView>
+            <FrameLayout
+                android:id="@+id/fl_sorting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="16dp"
+                android:background="@drawable/chip_background"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:gravity = "center">
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                <TextView
+                    android:id="@+id/tv_sorting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:drawableRight="@drawable/ic_baseline_keyboard_arrow_down_24px"
+                    tools:text="Popularity"
+                    style="@style/Text_Body1"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24px"/>
+
+            </FrameLayout>
+
+        </FrameLayout>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swiperefresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            android:background="@color/white">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+    </LinearLayout>
 </FrameLayout>

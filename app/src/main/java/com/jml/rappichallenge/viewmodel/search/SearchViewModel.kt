@@ -24,11 +24,11 @@ class SearchViewModel @Inject constructor(application: Application, moviesReposi
     private val rawQuery: SearchQuery = SearchQuery.Builder().sorting(Sorting.Popularity).language(Language.English).build()
     private var currentResults: MovieSearchResponse? = null
 
-    val query : LiveData<SearchQuery>?
-    get() = this.searchQueryInput
-
     val searchResponse : MovieSearchResponse?
     get() = currentResults
+
+    val query: SearchQuery?
+    get() = rawQuery
 
     @Inject
     lateinit var connectionManager : ConnectionManager
@@ -62,12 +62,19 @@ class SearchViewModel @Inject constructor(application: Application, moviesReposi
 
         return Transformations.map(searchLiveData) { input ->
             if (input.isSuccessfull) {
-                currentResults = input.getData()
-                requestStateObservable.setValue(RequestState.Success)
-                return@map input.getData()
+
+                if(currentResults == null)
+                {
+                    currentResults = input.getData()
+                } else {
+                    currentResults!!.append(input.getData())
+                }
+
+                requestStateObservable.value = RequestState.Success
+                return@map currentResults
             } else {
-                errorWrapperObservable.setValue(input.error)
-                requestStateObservable.setValue(RequestState.Failure)
+                errorWrapperObservable.value = input.error
+                requestStateObservable.value = RequestState.Failure
                 return@map null
             }
         }
@@ -88,7 +95,19 @@ class SearchViewModel @Inject constructor(application: Application, moviesReposi
     }
 
     fun resetPaging() {
+        currentResults = null
         rawQuery.resetPaging()
         this.searchQueryInput?.value = rawQuery
+    }
+
+    var sorting: Sorting
+    get() = rawQuery.sorting
+    set(value) {
+
+        if (rawQuery.sorting == sorting) { return }
+
+        currentResults = null
+        rawQuery.sorting = value
+        resetPaging()
     }
 }

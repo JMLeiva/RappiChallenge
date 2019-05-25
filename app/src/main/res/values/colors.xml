@@ -12,5 +12,8 @@
     <color name="rating_color_start">#772360</color>
     <color name="rating_color_end">#21d07a</color>
     <color name="rating_color_disabled">#747474</color>
+
     <color name="black">#000000</color>
+    <color name="light_grey">#EEEEEE</color>
+    <color name="medium_grey">#747474</color>
 </resources>

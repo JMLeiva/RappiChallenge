@@ -3,20 +3,16 @@ package com.jml.rappichallenge.view.search
 import android.animation.ArgbEvaluator
 import android.content.Context
 import android.graphics.PorterDuff
-import android.net.Uri
 import android.os.Build
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import butterknife.BindView
 
 import com.jmleiva.pagedrecyclerview.PagedViewHolder
 
 import butterknife.ButterKnife
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.TransformationUtils.centerCrop
 import com.jml.rappichallenge.GlideApp
 import com.jml.rappichallenge.R
 import com.jml.rappichallenge.models.entities.Movie
@@ -24,7 +20,7 @@ import com.jml.rappichallenge.models.enums.PictureSize
 import com.jml.rappichallenge.models.tools.DateHelper
 import com.jml.rappichallenge.tools.PictureUrlBuilder
 
-class SearchItemViewHolder internal constructor(itemView: View, callback: (View, Int) -> Void) : PagedViewHolder(itemView), View.OnClickListener  {
+class SearchItemViewHolder internal constructor(itemView: View, callback: (View, Int) -> Unit) : PagedViewHolder(itemView), View.OnClickListener  {
 
     var iv_cover : ImageView
     var tv_title : TextView
@@ -33,7 +29,7 @@ class SearchItemViewHolder internal constructor(itemView: View, callback: (View,
     var tv_releaseDate : TextView
     var tv_description : TextView
 
-    val callback : (View, Int) -> Void
+    val callback : (View, Int) -> Unit
 
     init {
         ButterKnife.bind(this, itemView)

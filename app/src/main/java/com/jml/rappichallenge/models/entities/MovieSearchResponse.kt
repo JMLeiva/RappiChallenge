@@ -25,11 +25,21 @@ class MovieSearchResponse internal constructor(private val dto: DTO) {
     val result: List<Movie>
         get() = ArrayList(dto.results!!)
 
+    fun append(data: MovieSearchResponse?) {
+
+        if(data == null) {return}
+
+        dto.page = data.page
+        dto.total_pages = data.pagesCount
+        dto.total_results = data.totalResultCount
+        dto.results?.addAll(data.result)
+    }
+
     internal data class DTO (
-        internal val page: Int = 0,
-        internal val total_results: Int = 0,
-        internal val total_pages: Int = 0,
-        internal val results: List<Movie>? = null
+        internal var page: Int = 0,
+        internal var total_results: Int = 0,
+        internal var total_pages: Int = 0,
+        internal var results: MutableList<Movie>? = null
     )
 
     class Deserializer : JsonDeserializer<MovieSearchResponse> {
