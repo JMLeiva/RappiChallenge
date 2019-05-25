@@ -13,6 +13,9 @@ internal object MdbRoutes {
 
     internal object Path {
         const val Discover = "discover"
+        const val Popular = "popular"
+        const val TopRated = "top_rated"
+        const val Upcoming = "upcoming"
         const val Movie = "movie"
     }
 

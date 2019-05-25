@@ -8,7 +8,7 @@ import dagger.android.ContributesAndroidInjector
 @Module
 abstract class SearchActivityModule {
 
-    @ContributesAndroidInjector(modules = [LoginFragmentModule::class])
+    @ContributesAndroidInjector(modules = [SearchFragmentModule::class])
     @FragmentScope
-    internal abstract fun bindDisoverFragment(): SearchFragment
+    internal abstract fun bindFragment(): SearchFragment
 }

@@ -1,7 +1,7 @@
 package com.jml.rappichallenge.view.search
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,13 +20,13 @@ import com.jml.rappichallenge.view.base.BaseFragment
 import com.jml.rappichallenge.viewmodel.common.EntityListState
 import com.jml.rappichallenge.viewmodel.search.SearchViewModel
 import com.jmleiva.pagedrecyclerview.PagedRecyclerViewAdapter
-import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.search_fragment.*
 import javax.inject.Inject
 import androidx.appcompat.widget.PopupMenu
+import com.jml.rappichallenge.view.detail.DetailActivity
 
 
-class SearchFragment : BaseFragment, PagedRecyclerViewAdapter.Paginator {
+class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator {
 
     private companion object SaveStateKey {
         val listPosition = "jml.rappichallenge.searchFragment.listPosition"
@@ -44,16 +44,11 @@ class SearchFragment : BaseFragment, PagedRecyclerViewAdapter.Paginator {
     private lateinit var linearLayoutManager : LinearLayoutManager
     private var pendingScrollToPosition : Int? = null
 
-    constructor() : super() {
-        Log.i("TEST", "TEST")
-    }
-
     override fun getNoConnectionView() : View? {
         return  include_no_connection
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidSupportInjection.inject(this)
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
 
@@ -117,7 +112,7 @@ class SearchFragment : BaseFragment, PagedRecyclerViewAdapter.Paginator {
             }
         })
 
-        searchViewModel.entityListStateMutableLiveData.observe(this, Observer<EntityListState> { entityListState ->
+        viewModel.entityListStateMutableLiveData.observe(this, Observer<EntityListState> { entityListState ->
             swiperefresh.isRefreshing = false
             showResults()
             adapter.stopLoading()
@@ -229,7 +224,9 @@ class SearchFragment : BaseFragment, PagedRecyclerViewAdapter.Paginator {
     }
 
     private fun onItemClick(movie : Movie) {
-      Log.i("TODO", "TODO")
+        val intent = Intent(context, DetailActivity::class.java)
+        intent.putExtra(DetailActivity.movieIdExtra, movie.id)
+        startActivity(intent)
     }
 
     override fun onSaveInstanceState(@NonNull outState: Bundle) {

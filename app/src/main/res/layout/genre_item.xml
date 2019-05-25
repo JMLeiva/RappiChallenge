@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          android:orientation="vertical"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          tools:text="@string/placeholder_genre"
+          android:background="@drawable/chip_background_colored_light"
+          style="@style/Text_Body2"
+          android:textColor="@color/white"
+          android:padding="8dp"
+          android:layout_margin="2dp">
+
+</TextView>

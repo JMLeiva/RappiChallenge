@@ -1,6 +1,8 @@
 package com.jml.rappichallenge.di
 
 import com.jml.rappichallenge.di.scope.ActivityScope
+import com.jml.rappichallenge.view.detail.DetailActivity
+import com.jml.rappichallenge.view.detail.DetailActivityModule
 import com.jml.rappichallenge.view.search.SearchActivity
 import com.jml.rappichallenge.view.search.SearchActivityModule
 import dagger.Module
@@ -14,4 +16,7 @@ abstract class BuildersModule {
     @ActivityScope
     internal abstract fun bindSearchActivity(): SearchActivity
 
+    @ContributesAndroidInjector(modules = [DetailActivityModule::class])
+    @ActivityScope
+    internal abstract fun bindDetailActivity(): DetailActivity
 }

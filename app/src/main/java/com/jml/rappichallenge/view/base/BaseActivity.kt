@@ -2,20 +2,17 @@ package com.jml.rappichallenge.view.base
 
 import android.os.Bundle
 import android.view.MenuItem
-import com.jml.rappichallenge.R
 import dagger.android.support.DaggerAppCompatActivity
-import kotlinx.android.synthetic.main.base_activity.*
 
 
 abstract class BaseActivity : DaggerAppCompatActivity() {
 
     protected abstract val rootFragmentTags: Array<String>
+    protected abstract val contentViewId : Int
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.base_activity)
-
-        setSupportActionBar(toolbar)
+        setContentView(contentViewId)
 
         // If activity is "recreating" (user rotated phone), fragment is restored by system
         if (savedInstanceState == null) {

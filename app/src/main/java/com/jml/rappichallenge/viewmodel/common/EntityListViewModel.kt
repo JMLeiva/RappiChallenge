@@ -19,5 +19,5 @@ abstract class EntityListViewModel<T>(application: Application) :  BaseViewModel
 
     }
 
-    protected abstract fun stateForResult(input: T): EntityListState
+    protected abstract fun stateForResult(input: T?): EntityListState
 }
