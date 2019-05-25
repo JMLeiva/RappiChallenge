@@ -9,23 +9,17 @@ import com.jml.rappichallenge.models.entities.Movie
 import com.jmleiva.pagedrecyclerview.PagedRecyclerViewAdapter
 import com.jmleiva.pagedrecyclerview.PagedViewHolder
 
-class SearchAdapter(context: Context, callback: (Movie) -> Unit) : PagedRecyclerViewAdapter<SearchItemViewHolder, PagedViewHolder>() {
+class SearchAdapter(private var context: Context, private var callback: (Movie) -> Unit) : PagedRecyclerViewAdapter<SearchItemViewHolder, PagedViewHolder>() {
 
     private var items : MutableList<Movie> = ArrayList()
-    private var context : Context
-    private var callback : (Movie) -> Unit
 
-    init {
-        this.context = context
-        this.callback = callback
-    }
-
-    public fun clear(){
+    fun clear(){
         items.clear()
         notifyDataSetChanged()
     }
 
-    fun appendItems(list: List<Movie>) {
+    fun setItems(list: List<Movie>) {
+        this.items.clear()
         this.items.addAll(list)
         notifyDataSetChanged()
     }
@@ -52,8 +46,6 @@ class SearchAdapter(context: Context, callback: (Movie) -> Unit) : PagedRecycler
     override fun onBindNormalViewHolder(holder: SearchItemViewHolder?, position: Int) {
         holder?.setup(context, items[position])
     }
-
-
 
     private val onItemClick = { _: View , position: Int ->
         callback(items[position])

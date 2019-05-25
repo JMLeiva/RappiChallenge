@@ -7,4 +7,7 @@
     <string name="retry">Retry</string>
     <string name="no_vote">NR</string>
     <string name="search_screen_title">RappiChallenge</string>
+    <string name="sorting_popularity">Popularity</string>
+    <string name="sorting_date">Upcoming</string>
+    <string name="sorting_rating">Top rated</string>
 </resources>

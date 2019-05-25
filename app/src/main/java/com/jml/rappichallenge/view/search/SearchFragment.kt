@@ -1,12 +1,12 @@
 package com.jml.rappichallenge.view.search
 
 import android.os.Bundle
-import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.NonNull
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.jml.rappichallenge.R
 import com.jml.rappichallenge.models.entities.Movie
-import com.jml.rappichallenge.models.other.SearchQuery
+import com.jml.rappichallenge.models.enums.Sorting
 import com.jml.rappichallenge.repository.ErrorWrapper
 import com.jml.rappichallenge.view.base.BaseFragment
 import com.jml.rappichallenge.viewmodel.common.EntityListState
@@ -23,12 +23,16 @@ import com.jmleiva.pagedrecyclerview.PagedRecyclerViewAdapter
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.search_fragment.*
 import javax.inject.Inject
+import androidx.appcompat.widget.PopupMenu
 
-class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator {
 
-    private val SAVE_STATE_QUERY_STR = "jml.rappichallenge.SAVE_STATE_QUERY_STR"
+class SearchFragment : BaseFragment, PagedRecyclerViewAdapter.Paginator {
 
-    private var savedInstanceSearchQuery: SearchQuery? = null
+    private companion object SaveStateKey {
+        val listPosition = "jml.rappichallenge.searchFragment.listPosition"
+    }
+
+
     private lateinit var searchViewModel: SearchViewModel
 
     internal var notConnectionSnackbar : Snackbar? = null
@@ -36,7 +40,13 @@ class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    internal lateinit var adapter : SearchAdapter
+    private lateinit var adapter : SearchAdapter
+    private lateinit var linearLayoutManager : LinearLayoutManager
+    private var pendingScrollToPosition : Int? = null
+
+    constructor() : super() {
+        Log.i("TEST", "TEST")
+    }
 
     override fun getNoConnectionView() : View? {
         return  include_no_connection
@@ -48,10 +58,7 @@ class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator {
         setHasOptionsMenu(true)
 
         if (savedInstanceState != null) {
-            val searchQuery = savedInstanceState.getParcelable<Parcelable>(SAVE_STATE_QUERY_STR)
-            if (searchQuery is SearchQuery) {
-                savedInstanceSearchQuery = searchQuery
-            }
+            pendingScrollToPosition = savedInstanceState.getInt(SaveStateKey.listPosition)
         }
     }
 
@@ -75,17 +82,28 @@ class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator {
 
         adapter = SearchAdapter(context!!) { movie -> onItemClick(movie) }
         adapter.paginator = this
+        linearLayoutManager = LinearLayoutManager(context)
         rv_list.adapter = adapter
-        rv_list.layoutManager = LinearLayoutManager(context)
+        rv_list.layoutManager = linearLayoutManager
 
         swiperefresh.setOnRefreshListener {
-            adapter.clear()
             searchViewModel.resetPaging()
         }
+
+        fl_sorting.setOnClickListener { openSortingOptions() }
 
         showResults()
     }
 
+    private fun setupSortingText() {
+
+        when(searchViewModel.sorting) {
+            Sorting.Popularity -> tv_sorting.text = getString(R.string.sorting_popularity)
+            Sorting.Date -> tv_sorting.text = getString(R.string.sorting_date)
+            Sorting.Rating -> tv_sorting.text = getString(R.string.sorting_rating)
+        }
+
+    }
 
     private fun setupObserver(viewModel: SearchViewModel) {
 
@@ -106,14 +124,24 @@ class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator {
 
             when (entityListState) {
                 EntityListState.Successful -> {
+                    setupSortingText()
                     if (searchViewModel.data != null) {
-                        adapter.appendItems(searchViewModel.data!!.result)
+                        refreshListWithResults()
                     }
                 }
                 EntityListState.NoConnection -> showNoConnection()
                 EntityListState.NoResults -> showEmtpyState()
             }
         })
+    }
+
+    private fun refreshListWithResults() {
+        adapter.setItems(searchViewModel.data!!.result)
+
+        if ( pendingScrollToPosition != null) {
+            rv_list.scrollToPosition(pendingScrollToPosition!!)
+            pendingScrollToPosition = null
+        }
     }
 
     override fun hasMoreData(): Boolean {
@@ -176,7 +204,36 @@ class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator {
         searchViewModel.start()
     }
 
+    private fun openSortingOptions() {
+        if(context != null){
+            val popup = PopupMenu(context!!, fl_sorting)
+            val inflater = popup.menuInflater
+            inflater.inflate(R.menu.sorting_menu, popup.menu)
+            popup.setOnMenuItemClickListener { menuItem ->
+                when(menuItem.itemId) {
+                    R.id.action_sorting_popularity -> setSorting(Sorting.Popularity)
+                    R.id.action_sorting_rating -> setSorting(Sorting.Rating)
+                    R.id.action_sorting_date -> setSorting(Sorting.Date)
+                    else -> { return@setOnMenuItemClickListener false }
+                }
+
+                return@setOnMenuItemClickListener true
+            }
+            popup.show()
+        }
+    }
+
+    private fun setSorting(sorting : Sorting) {
+        adapter.clear()
+        searchViewModel.sorting = sorting
+    }
+
     private fun onItemClick(movie : Movie) {
       Log.i("TODO", "TODO")
     }
+
+    override fun onSaveInstanceState(@NonNull outState: Bundle) {
+        outState.putInt(SaveStateKey.listPosition, linearLayoutManager.findFirstVisibleItemPosition())
+    }
+
 }

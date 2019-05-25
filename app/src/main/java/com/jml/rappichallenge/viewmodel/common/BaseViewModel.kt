@@ -18,7 +18,8 @@ import com.jml.rappichallenge.repository.ErrorWrapper
  * It also provides information about the request-state, and errors.
  * */
 abstract class BaseViewModel<T> internal constructor(application: Application) : AndroidViewModel(application) {
-    internal val dataObservable = createDataObservable()
+
+    internal val dataObservable : LiveData<T> by lazy { createDataObservable() }
 
     protected var requestStateObservable: MutableLiveData<RequestState> = MutableLiveData()
     protected var errorWrapperObservable: MutableLiveData<ErrorWrapper> = MutableLiveData()
@@ -26,7 +27,7 @@ abstract class BaseViewModel<T> internal constructor(application: Application) :
     private val blindObserver: BlindObserver<T> = BlindObserver()
 
     val data: T?
-        get() = dataObservable.getValue()
+        get() = dataObservable.value
 
     val stateObservable: LiveData<RequestState>
         get() = requestStateObservable

@@ -17,6 +17,7 @@ abstract class BaseActivity : DaggerAppCompatActivity() {
 
         setSupportActionBar(toolbar)
 
+        // If activity is "recreating" (user rotated phone), fragment is restored by system
         if (savedInstanceState == null) {
             createFragment()
         } else {
@@ -30,7 +31,9 @@ abstract class BaseActivity : DaggerAppCompatActivity() {
 
     private fun mustCreateFragment(): Boolean {
         for (tag in rootFragmentTags) {
-            supportFragmentManager.findFragmentByTag(tag) ?: return false
+            val found = supportFragmentManager.findFragmentByTag(tag)
+
+            if(found != null) { return false }
         }
 
         return true

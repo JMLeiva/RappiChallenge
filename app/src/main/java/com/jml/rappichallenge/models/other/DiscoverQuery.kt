@@ -11,10 +11,8 @@ class SearchQuery : Parcelable {
         private set
 
     var sorting: Sorting = Sorting.Popularity
-        private set
 
     var language: Language = Language.English
-        private set
 
 
     protected constructor()
