@@ -1,12 +1,15 @@
 package com.jml.rappichallenge.view.search
 
+import android.animation.ArgbEvaluator
 import android.content.Context
+import android.graphics.PorterDuff
 import android.net.Uri
 import android.os.Build
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import butterknife.BindView
 
 import com.jmleiva.pagedrecyclerview.PagedViewHolder
@@ -49,13 +52,11 @@ class SearchItemViewHolder internal constructor(itemView: View, callback: (View,
     fun setup(context: Context, item: Movie) {
         tv_title.text = item.title
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            pb_vote.setProgress( (item.voteAverage * 10).toInt(), true)
+        if(item.voteAverage != null && item.voteCount > 0) {
+           setVoteValue(context, item.voteAverage!!)
         } else {
-            pb_vote.progress = (item.voteAverage * 10).toInt()
+            setVoteNoValue(context)
         }
-
-        tv_vote_value.text = (item.voteAverage * 10).toInt().toString()
 
         if (item.releaseDate != null) {
             tv_releaseDate.text = DateHelper.formatDate(item.releaseDate!!)
@@ -74,5 +75,35 @@ class SearchItemViewHolder internal constructor(itemView: View, callback: (View,
 
     override fun onClick(v: View) {
         callback(v, this.adapterPosition)
+    }
+
+    private fun setVoteValue(context: Context, value : Float) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            pb_vote.setProgress( (value * 10).toInt(), true)
+        } else {
+            pb_vote.progress = (value * 10).toInt()
+        }
+        pb_vote.progressDrawable.setColorFilter(getColorForValue(context, value / 10.0f), PorterDuff.Mode.SRC_IN)
+        tv_vote_value.text = (value * 10).toInt().toString()
+    }
+
+    private fun setVoteNoValue(context: Context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            pb_vote.setProgress(100, true)
+        } else {
+            pb_vote.progress = 100
+        }
+        pb_vote.progressDrawable.setColorFilter(ContextCompat.getColor(context, R.color.rating_color_disabled), PorterDuff.Mode.SRC_IN)
+        tv_vote_value.text = context.getString(R.string.no_vote)
+    }
+
+
+
+    private fun getColorForValue(context: Context, value : Float) : Int {
+        val startColor = ContextCompat.getColor(context, R.color.rating_color_start)
+        val endColor = ContextCompat.getColor(context, R.color.rating_color_end)
+
+
+        return ArgbEvaluator().evaluate(value, startColor, endColor) as Int
     }
 }
