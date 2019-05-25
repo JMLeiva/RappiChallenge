@@ -2,6 +2,7 @@ package com.jml.rappichallenge.view.search
 
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.jml.rappichallenge.R
 import com.jml.rappichallenge.models.entities.Movie
 import com.jml.rappichallenge.models.other.SearchQuery
@@ -28,6 +30,8 @@ class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator {
 
     private var savedInstanceSearchQuery: SearchQuery? = null
     private lateinit var searchViewModel: SearchViewModel
+
+    internal var notConnectionSnackbar : Snackbar? = null
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -116,6 +120,8 @@ class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator {
 
         // If swipe refreshing, return false
         if (swiperefresh.isRefreshing) { return false }
+        if (searchViewModel.entityListStateMutableLiveData.value == EntityListState.NoConnection &&
+                !connectionManager.isInternetConnected) { return false }
 
         val result = searchViewModel.searchResponse
         val finished = result?.isFinished ?: false
@@ -137,17 +143,40 @@ class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator {
     private fun showResults() {
         //include_welcome.setVisibility(View.GONE)
        // include_empty.setVisibility(View.GONE)
+        rv_list.visibility = View.VISIBLE
         swiperefresh.visibility = View.VISIBLE
         hideNoConnection()
         //activity.invalidateOptionsMenu()
     }
 
-
-    override fun onRetryNoConnection() {
-        TODO("not implemented")
+    private fun hideResults() {
+        swiperefresh.visibility = View.GONE
     }
 
-    private fun onItemClick(movie : Movie): Void {
-        TODO("not implemented")
+    override fun showNoConnection() {
+
+        if(adapter.itemCount > 0){
+            notConnectionSnackbar = Snackbar.make(fl_conatainer, R.string.search_noConnectionTextTitle, Snackbar.LENGTH_INDEFINITE)
+            notConnectionSnackbar?.setAction(R.string.retry) { onRetryNoConnection() }
+            notConnectionSnackbar!!.show()
+            return
+        }
+
+        super.showNoConnection()
+        hideResults()
+    }
+
+    override fun hideNoConnection() {
+        super.hideNoConnection()
+        notConnectionSnackbar?.dismiss()
+    }
+
+    override fun onRetryNoConnection() {
+        showResults()
+        searchViewModel.start()
+    }
+
+    private fun onItemClick(movie : Movie) {
+      Log.i("TODO", "TODO")
     }
 }

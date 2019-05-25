@@ -9,11 +9,11 @@ import com.jml.rappichallenge.models.entities.Movie
 import com.jmleiva.pagedrecyclerview.PagedRecyclerViewAdapter
 import com.jmleiva.pagedrecyclerview.PagedViewHolder
 
-class SearchAdapter(context: Context, callback: (Movie) -> Void) : PagedRecyclerViewAdapter<SearchItemViewHolder, PagedViewHolder>() {
+class SearchAdapter(context: Context, callback: (Movie) -> Unit) : PagedRecyclerViewAdapter<SearchItemViewHolder, PagedViewHolder>() {
 
     private var items : MutableList<Movie> = ArrayList()
     private var context : Context
-    private var callback : (Movie) -> Void
+    private var callback : (Movie) -> Unit
 
     init {
         this.context = context

@@ -13,16 +13,18 @@ abstract class BaseFragment : DaggerFragment() {
     internal abstract fun getNoConnectionView() : View?
 
     internal open fun setupUI() {
-        getNoConnectionView()?.setOnClickListener { onRetryNoConnection() }
+        getNoConnectionView()?.setOnClickListener {
+            onRetryNoConnection()
+        }
     }
 
     protected abstract fun onRetryNoConnection()
 
-    protected fun showNoConnection() {
+    internal open fun showNoConnection() {
         getNoConnectionView()?.visibility = View.VISIBLE
     }
 
-    protected fun hideNoConnection() {
+    internal open fun hideNoConnection() {
         getNoConnectionView()?.visibility = View.GONE
     }
 }
