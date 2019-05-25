@@ -10,5 +10,9 @@ interface MdbApi {
     fun discoverMovie(language: Language, sorting: Sorting, page: Int,
                       callback: ApiCallback<MovieSearchResponse>)
 
+    fun getPopularMovies(language: Language, page : Int, callback: ApiCallback<MovieSearchResponse>)
+    fun getTopRatedMovies(language: Language, page : Int, callback: ApiCallback<MovieSearchResponse>)
+    fun getUpcomingMovies(language: Language, page : Int, callback: ApiCallback<MovieSearchResponse>)
+
     fun getMovie(id : Int, callback: ApiCallback<Movie>)
 }

@@ -57,7 +57,11 @@ class SearchViewModel @Inject constructor(application: Application, private val 
 
     private fun getTransformationLiveData(query: SearchQuery): LiveData<MovieSearchResponse> {
 
-        val searchLiveData = moviesRepository.search(query)
+        val searchLiveData = when(query.sorting) {
+            Sorting.Popularity -> moviesRepository.getPopularMovies(query)
+            Sorting.Rating -> moviesRepository.getTopRatedMovies(query)
+            Sorting.Date -> moviesRepository.getUpcomingMovies(query)
+        }
 
         return Transformations.map(searchLiveData) { input ->
             if (input.isSuccessfull) {
@@ -103,7 +107,7 @@ class SearchViewModel @Inject constructor(application: Application, private val 
     get() = rawQuery.sorting
     set(value) {
 
-        if (rawQuery.sorting == sorting) { return }
+        if (rawQuery.sorting == value) { return }
 
         currentResults = null
         rawQuery.sorting = value

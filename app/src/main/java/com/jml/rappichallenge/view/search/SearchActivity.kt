@@ -6,7 +6,7 @@ import com.jml.rappichallenge.view.base.BaseActivity
 import kotlinx.android.synthetic.main.base_toolbar_activity.*
 
 /*
- *	Activity responsible for allowing the user to perform a search
+ *	Activity responsible for allowing the user to perform a discover
  * */
 class SearchActivity : BaseActivity() {
     override val contentViewId: Int

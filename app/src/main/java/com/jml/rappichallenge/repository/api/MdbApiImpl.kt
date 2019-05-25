@@ -38,6 +38,21 @@ class MdbApiImpl @Inject constructor() : MdbApi {
                    @Query(MdbRoutes.QKey.IncludeVideo) includeVideo: Boolean,
                    @Query(MdbRoutes.QKey.Page) page: Int): Call<MovieSearchResponse>
 
+        @GET(MdbRoutes.Version.V3 + "/" + MdbRoutes.Path.Movie + "/" + MdbRoutes.Path.Popular)
+        fun getPopularMovies(@Query(MdbRoutes.QKey.ApiKey) apiKey: String,
+                   @Query(MdbRoutes.QKey.Language) language: String,
+                   @Query(MdbRoutes.QKey.Page) page: Int): Call<MovieSearchResponse>
+
+        @GET(MdbRoutes.Version.V3 + "/" + MdbRoutes.Path.Movie + "/" + MdbRoutes.Path.TopRated)
+        fun getTopRatedMovies(@Query(MdbRoutes.QKey.ApiKey) apiKey: String,
+                             @Query(MdbRoutes.QKey.Language) language: String,
+                             @Query(MdbRoutes.QKey.Page) page: Int): Call<MovieSearchResponse>
+
+        @GET(MdbRoutes.Version.V3 + "/" + MdbRoutes.Path.Movie + "/" + MdbRoutes.Path.Upcoming)
+        fun getUpcomingMovies(@Query(MdbRoutes.QKey.ApiKey) apiKey: String,
+                             @Query(MdbRoutes.QKey.Language) language: String,
+                             @Query(MdbRoutes.QKey.Page) page: Int): Call<MovieSearchResponse>
+
         @GET(MdbRoutes.Version.V3 + "/" + MdbRoutes.Path.Movie + "/{movie_id}")
         fun getMovie(@Path("movie_id") movieId : Int,
                      @Query(MdbRoutes.QKey.ApiKey) apiKey: String) : Call<Movie>
@@ -82,6 +97,30 @@ class MdbApiImpl @Inject constructor() : MdbApi {
 
         makeCall(call, callback)
     }
+
+    override fun getPopularMovies(language: Language, page: Int,
+                               callback: ApiCallback<MovieSearchResponse>) {
+        val call = service.getPopularMovies(BuildConfig.ApiKey,
+                MdbRoutes.LanguageCode.fromLanguage(language), page)
+
+        makeCall(call, callback)
+    }
+    override fun getTopRatedMovies(language: Language, page: Int,
+                                  callback: ApiCallback<MovieSearchResponse>) {
+        val call = service.getTopRatedMovies(BuildConfig.ApiKey,
+                MdbRoutes.LanguageCode.fromLanguage(language), page)
+
+        makeCall(call, callback)
+    }
+
+    override fun getUpcomingMovies(language: Language, page: Int,
+                                  callback: ApiCallback<MovieSearchResponse>) {
+        val call = service.getUpcomingMovies(BuildConfig.ApiKey,
+                MdbRoutes.LanguageCode.fromLanguage(language), page)
+
+        makeCall(call, callback)
+    }
+
 
     override fun getMovie(id: Int, callback: ApiCallback<Movie>) {
         val call = service.getMovie(id, BuildConfig.ApiKey)
