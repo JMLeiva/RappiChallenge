@@ -1,5 +1,7 @@
 package com.jml.rappichallenge.view.detail
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -95,12 +97,18 @@ class DetailFragment : BaseFragment() {
         })
     }
 
-    private fun showLoading() {
+    override fun setupUI() {
+        super.setupUI()
+        sv_contents.visibility = View.GONE
+        iv_back.setOnClickListener { activity?.finish() }
+    }
 
+    private fun showLoading() {
+        pb_loading.visibility = View.VISIBLE
     }
 
     private fun hideLoading() {
-
+        pb_loading.visibility = View.GONE
     }
 
     private fun showResult(movie : Movie) {
@@ -109,6 +117,8 @@ class DetailFragment : BaseFragment() {
             showNotFoundDialog()
             return
         }
+
+        sv_contents.visibility = View.VISIBLE
 
         setupMainInfo(movie)
         setupGenres(movie)
@@ -163,11 +173,16 @@ class DetailFragment : BaseFragment() {
     }
 
     private fun showNotFoundDialog() {
-        // TODO
+        AlertDialog.Builder(context)
+                .setTitle(R.string.error_dialog_title)
+                .setMessage(R.string.not_found_dialog_body)
+                .setOnDismissListener { activity?.finish() }
+                .create().show()
     }
 
     override fun onRetryNoConnection() {
-       //TODO
+       hideNoConnection()
+       movieViewModel.retry()
     }
 
     override fun getNoConnectionView(): View? {

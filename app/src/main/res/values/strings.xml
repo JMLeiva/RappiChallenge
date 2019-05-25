@@ -15,5 +15,7 @@
     <string name="placeholder_title">Avengers, Infinity War</string>
     <string name="genres">Genres</string>
     <string name="placeholder_genre">Action</string>
-    <string name="crew">Featured crew</string>
+    <string name="videos">Trailers</string>
+    <string name="error_dialog_title">Warning!</string>
+    <string name="not_found_dialog_body">The content you\'re looking for has not been found</string>
 </resources>
