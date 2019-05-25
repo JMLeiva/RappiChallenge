@@ -7,9 +7,6 @@ import com.jml.rappichallenge.models.enums.Sorting
 
 class SearchQuery : Parcelable {
 
-    var keyword: String? = null
-        private set
-
     var page: Int = 1
         private set
 
@@ -23,7 +20,6 @@ class SearchQuery : Parcelable {
     protected constructor()
 
     protected constructor(pIn: Parcel) {
-        keyword = pIn.readString()
         page = pIn.readInt()
         sorting = Sorting.valueOf(pIn.readString() ?: Sorting.Popularity.name)
         language = Language.valueOf(pIn.readString() ?: Language.English.name)
@@ -33,28 +29,22 @@ class SearchQuery : Parcelable {
         this.page += 1
     }
 
+    fun resetPaging() {
+        this.page = 1
+    }
+
     override fun describeContents(): Int {
         return 0
     }
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest.writeString(keyword)
         dest.writeInt(page)
         dest.writeString(sorting.name)
         dest.writeString(language.name)
     }
 
     class Builder {
-        internal var builderSearchQuuery: SearchQuery
-
-        init {
-            builderSearchQuuery = SearchQuery()
-        }
-
-        fun keyword(keyword: String): Builder {
-            builderSearchQuuery.keyword = keyword
-            return this
-        }
+        private var builderSearchQuuery: SearchQuery = SearchQuery()
 
         fun sorting(sorting : Sorting) : Builder {
             builderSearchQuuery.sorting = sorting
@@ -68,7 +58,6 @@ class SearchQuery : Parcelable {
 
         fun build(): SearchQuery {
             val result = SearchQuery()
-            result.keyword = builderSearchQuuery.keyword
             result.page = builderSearchQuuery.page
             result.sorting = builderSearchQuuery.sorting
             result.language = builderSearchQuuery.language

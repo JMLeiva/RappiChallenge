@@ -1,16 +1,18 @@
 package com.jml.rappichallenge.view.base
 
 import android.view.View
+import com.jml.rappichallenge.tools.ConnectionManager
 import dagger.android.support.DaggerFragment
+import javax.inject.Inject
 
 abstract class BaseFragment : DaggerFragment() {
 
-    //@Inject
-    //protected var connectionManager: ConnectionManager? = null
+    @Inject
+    protected lateinit var connectionManager: ConnectionManager
 
     internal abstract fun getNoConnectionView() : View?
 
-    protected fun setupUI() {
+    internal open fun setupUI() {
         getNoConnectionView()?.setOnClickListener { onRetryNoConnection() }
     }
 
