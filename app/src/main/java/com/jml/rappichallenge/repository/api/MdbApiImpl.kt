@@ -3,7 +3,7 @@ package com.jml.rappichallenge.repository.api
 import com.google.gson.GsonBuilder
 import com.jml.rappichallenge.BuildConfig
 import com.jml.rappichallenge.models.entities.Movie
-import com.jml.rappichallenge.models.entities.MovieDiscoverResponse
+import com.jml.rappichallenge.models.entities.MovieSearchResponse
 import com.jml.rappichallenge.models.entities.Namable
 import com.jml.rappichallenge.models.enums.Language
 import com.jml.rappichallenge.models.enums.Sorting
@@ -20,8 +20,11 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 import java.util.concurrent.TimeUnit.SECONDS
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class MdbApiImpl : MdbApi {
+@Singleton
+class MdbApiImpl @Inject constructor() : MdbApi {
 
     private val service: Service
 
@@ -32,8 +35,7 @@ class MdbApiImpl : MdbApi {
                    @Query(MdbRoutes.QKey.Sorting) sorting: String,
                    @Query(MdbRoutes.QKey.IncludeAdult) includeAdult: Boolean,
                    @Query(MdbRoutes.QKey.IncludeVideo) includeVideo: Boolean,
-                   @Query(MdbRoutes.QKey.Page) page: Int,
-                   @Query(MdbRoutes.QKey.Keyword) keyword: String?): Call<MovieDiscoverResponse>
+                   @Query(MdbRoutes.QKey.Page) page: Int): Call<MovieSearchResponse>
 
     }
 
@@ -55,7 +57,7 @@ class MdbApiImpl : MdbApi {
         val builder = GsonBuilder()
                 .registerTypeAdapter(Namable::class.java, Namable.Deserializer())
                 .registerTypeAdapter(Movie::class.java, Movie.Deserializer())
-                .registerTypeAdapter(MovieDiscoverResponse::class.java, MovieDiscoverResponse.Deserializer())
+                .registerTypeAdapter(MovieSearchResponse::class.java, MovieSearchResponse.Deserializer())
 
         return Retrofit.Builder()
                 .baseUrl(MdbRoutes.RootUrl)
@@ -65,13 +67,13 @@ class MdbApiImpl : MdbApi {
                 .create(Service::class.java)
     }
 
-    override fun discoverMovie(language: Language, sorting: Sorting, page: Int, keyword: String?,
-                               callback: ApiCallback<MovieDiscoverResponse>) {
+    override fun discoverMovie(language: Language, sorting: Sorting, page: Int,
+                               callback: ApiCallback<MovieSearchResponse>) {
         val call = service.search(BuildConfig.ApiKey,
                 MdbRoutes.LanguageCode.fromLanguage(language),
                 MdbRoutes.SortingCode.fromSorting(sorting),
                 false,
-                true, page, keyword)
+                true, page)
 
         makeCall(call, callback)
     }

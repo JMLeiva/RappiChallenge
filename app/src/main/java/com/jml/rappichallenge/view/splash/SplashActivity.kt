@@ -8,7 +8,7 @@ import android.view.View.GONE
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import com.jml.rappichallenge.R
-import com.jml.rappichallenge.view.discover.DiscoverActivity
+import com.jml.rappichallenge.view.search.SearchActivity
 import kotlinx.android.synthetic.main.splash_activity.*
 
 class SplashActivity : AppCompatActivity() {
@@ -71,7 +71,7 @@ class SplashActivity : AppCompatActivity() {
     private fun goToMainScreen(){
         rl_splash_content_container.visibility = GONE
 
-        val intent = Intent(this, DiscoverActivity::class.java)
+        val intent = Intent(this, SearchActivity::class.java)
         startActivity(intent)
         finish()
     }

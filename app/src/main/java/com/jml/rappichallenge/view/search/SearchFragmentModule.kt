@@ -1,4 +1,4 @@
-package com.jml.rappichallenge.view.discover
+package com.jml.rappichallenge.view.search
 
 import dagger.Module
 

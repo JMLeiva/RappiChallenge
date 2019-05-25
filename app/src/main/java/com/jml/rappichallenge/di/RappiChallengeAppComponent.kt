@@ -12,9 +12,16 @@ import javax.inject.Singleton
 @Component(modules = [
     AndroidInjectionModule::class,
     RappiChallengeAppModule::class,
-    BuildersModule::class,
-    ViewModelModule::class])
+    ViewModelModule::class,
+    BuildersModule::class])
+
 interface RappiChallengeAppComponent : AndroidInjector<RappiChallengeApplication> {
 
+    @Component.Builder
+    interface Builder {
+        @BindsInstance
+        fun application(application: RappiChallengeApplication): Builder
+        fun build() : RappiChallengeAppComponent
+    }
     override fun inject(app: RappiChallengeApplication)
 }

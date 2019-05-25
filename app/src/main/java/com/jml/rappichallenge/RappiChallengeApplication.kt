@@ -19,14 +19,9 @@ class RappiChallengeApplication : Application(), HasActivityInjector {
     override fun onCreate() {
         super.onCreate()
 
-        component = DaggerRappiChallengeAppComponent.builder().build()
+        component = DaggerRappiChallengeAppComponent.builder().application(this).build()
         component.inject(this)
     }
-
-    //@Inject
-    //var dispatchingAndroidInjectorActivity: DispatchingAndroidInjector<Activity>? = null
-
-
 
     override fun activityInjector(): AndroidInjector<Activity>? {
         return activityInjector

@@ -23,7 +23,7 @@ class Movie internal constructor(private val dto: DTO) {
     val voteCount: Float
         get() = dto.vote_count.toFloat()
 
-    val voteAverage: Float
+    val voteAverage: Float?
         get() = dto.vote_average
 
     val title: String?
@@ -107,7 +107,7 @@ class Movie internal constructor(private val dto: DTO) {
             internal val vote_count: Int = 0,
             internal val id: Int = 0,
             internal val video: Boolean = false,
-            internal val vote_average: Float = 0.toFloat(),
+            internal val vote_average: Float?,
             internal val title: String? = null,
             internal val popularity: Float = 0.toFloat(),
             internal val poster_path: String? = null,

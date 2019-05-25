@@ -8,7 +8,7 @@ import com.google.gson.JsonParseException
 import java.lang.reflect.Type
 import java.util.ArrayList
 
-class MovieDiscoverResponse internal constructor(private val dto: DTO) {
+class MovieSearchResponse internal constructor(private val dto: DTO) {
 
     val page: Int
         get() = dto.page
@@ -18,6 +18,9 @@ class MovieDiscoverResponse internal constructor(private val dto: DTO) {
 
     val pagesCount: Int
         get() = dto.total_pages
+
+    val isFinished: Boolean
+        get() = page == pagesCount
 
     val result: List<Movie>
         get() = ArrayList(dto.results!!)
@@ -29,11 +32,11 @@ class MovieDiscoverResponse internal constructor(private val dto: DTO) {
         internal val results: List<Movie>? = null
     )
 
-    class Deserializer : JsonDeserializer<MovieDiscoverResponse> {
+    class Deserializer : JsonDeserializer<MovieSearchResponse> {
         @Throws(JsonParseException::class)
-        override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): MovieDiscoverResponse {
-            val dto = context.deserialize<MovieDiscoverResponse.DTO>(json, MovieDiscoverResponse.DTO::class.java)
-            return MovieDiscoverResponse(dto)
+        override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): MovieSearchResponse {
+            val dto = context.deserialize<DTO>(json, MovieSearchResponse.DTO::class.java)
+            return MovieSearchResponse(dto)
         }
     }
 }
