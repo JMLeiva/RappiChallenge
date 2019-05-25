@@ -55,7 +55,6 @@ class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator {
         super.onActivityCreated(savedInstanceState)
         searchViewModel = ViewModelProviders.of(this, viewModelFactory).get(SearchViewModel::class.java)
         setupObserver(searchViewModel)
-        searchViewModel.start()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -74,6 +73,13 @@ class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator {
         adapter.paginator = this
         rv_list.adapter = adapter
         rv_list.layoutManager = LinearLayoutManager(context)
+
+        swiperefresh.setOnRefreshListener {
+            adapter.clear()
+            searchViewModel.resetPaging()
+        }
+
+        showResults()
     }
 
 
@@ -89,11 +95,9 @@ class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator {
             }
         })
 
-
-
         searchViewModel.entityListStateMutableLiveData.observe(this, Observer<EntityListState> { entityListState ->
             swiperefresh.isRefreshing = false
-
+            showResults()
             adapter.stopLoading()
 
             when (entityListState) {
@@ -101,7 +105,6 @@ class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator {
                     if (searchViewModel.data != null) {
                         adapter.appendItems(searchViewModel.data!!.result)
                     }
-                    showResults()
                 }
                 EntityListState.NoConnection -> showNoConnection()
                 EntityListState.NoResults -> showEmtpyState()
@@ -110,8 +113,12 @@ class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator {
     }
 
     override fun hasMoreData(): Boolean {
+
+        // If swipe refreshing, return false
+        if (swiperefresh.isRefreshing) { return false }
+
         val result = searchViewModel.searchResponse
-        val finished = result?.isFinished ?: true
+        val finished = result?.isFinished ?: false
         return !finished
     }
 

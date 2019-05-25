@@ -78,7 +78,17 @@ class SearchViewModel @Inject constructor(application: Application, moviesReposi
     }
 
     fun advance() {
-        rawQuery.advancePage()
+        if(searchResponse == null) {
+            start()
+        }
+        else {
+            rawQuery.advancePage()
+            this.searchQueryInput?.value = rawQuery
+        }
+    }
+
+    fun resetPaging() {
+        rawQuery.resetPaging()
         this.searchQueryInput?.value = rawQuery
     }
 }
