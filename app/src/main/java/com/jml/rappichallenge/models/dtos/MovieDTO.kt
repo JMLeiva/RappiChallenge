@@ -25,7 +25,7 @@ open class MovieDTO : RealmObject() {
     internal var homepage: String? = null
     internal var imdbId: String? = null
     internal var runtime: Int = 0
-    internal var production_companies: RealmList<NamableDTO>? = null // TODO <- DTO mas completo tiene imagen
+    internal var production_companies: RealmList<NamableDTO>? = null
     internal var production_countries: RealmList<NamableDTO>? = null
     internal var spoken_languages: RealmList<NamableDTO>? = null
     internal var status: String? = null
