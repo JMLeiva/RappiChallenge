@@ -1,7 +1,7 @@
 package com.jml.rappichallenge.view.detail
 
 import android.app.AlertDialog
-import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,18 +11,24 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.jml.rappichallenge.GlideApp
 import com.jml.rappichallenge.R
 import com.jml.rappichallenge.models.entities.Movie
 import com.jml.rappichallenge.models.entities.Namable
+import com.jml.rappichallenge.models.entities.Video
 import com.jml.rappichallenge.models.enums.PictureSize
 import com.jml.rappichallenge.models.enums.RequestState
+import com.jml.rappichallenge.models.enums.VideoSite
 import com.jml.rappichallenge.models.tools.DateHelper
 import com.jml.rappichallenge.tools.PictureUrlBuilder
 import com.jml.rappichallenge.tools.VoteViewHelper
 import com.jml.rappichallenge.view.base.BaseFragment
+import com.jml.rappichallenge.view.youtube.YouTubeActivity
+import com.jml.rappichallenge.viewmodel.common.EntityListState
 import com.jml.rappichallenge.viewmodel.common.EntityState
 import com.jml.rappichallenge.viewmodel.detail.MovieViewModel
+import com.jml.rappichallenge.viewmodel.detail.VideoListViewModel
 import kotlinx.android.synthetic.main.detail_fragment.*
 import kotlinx.android.synthetic.main.vote_layout.*
 import javax.inject.Inject
@@ -37,25 +43,29 @@ class DetailFragment : BaseFragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var movieViewModel: MovieViewModel
+    private lateinit var videoListViewModel : VideoListViewModel
+
     private var movieId : Int? = null
+
+    private lateinit var videoAdapter : VideosAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-
-        if (savedInstanceState != null) {
-           // TODO
-        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         movieViewModel = ViewModelProviders.of(this, viewModelFactory).get(MovieViewModel::class.java)
-        setupObserver(movieViewModel)
+        setupMovieObserver(movieViewModel)
+
+        videoListViewModel = ViewModelProviders.of(this, viewModelFactory).get(VideoListViewModel::class.java)
+        setupVideosObserver(videoListViewModel)
 
         movieId = arguments?.getInt(movieIdExtra)
         movieViewModel.setItemId(movieId)
+        videoListViewModel.setItemId(movieId)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -67,7 +77,7 @@ class DetailFragment : BaseFragment() {
         setupUI()
     }
 
-    private fun setupObserver(viewModel: MovieViewModel) {
+    private fun setupMovieObserver(viewModel: MovieViewModel) {
 
         viewModel.errorObservable.observe(this, Observer{ errorWrapper ->
             if (connectionManager.isInternetConnected) {
@@ -97,8 +107,39 @@ class DetailFragment : BaseFragment() {
         })
     }
 
+    private fun setupVideosObserver(viewModel: VideoListViewModel) {
+
+        viewModel.errorObservable.observe(this, Observer{ errorWrapper ->
+            if (connectionManager.isInternetConnected) {
+                val errorMsg = errorWrapper?.message
+
+                if (errorMsg != null) {
+                    Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+
+        viewModel.stateObservable.observe(this, Observer {state ->
+            when(state) {
+                RequestState.Loading -> showVideosLoading()
+                RequestState.Failure, RequestState.Success -> hideVideosLoading()
+            }
+        })
+
+        viewModel.entityListStateMutableLiveData.observe(this, Observer{ entityState ->
+
+            when (entityState) {
+                EntityListState.Successful -> {
+                   showVideos(viewModel.videoReponse!!.result)
+                }
+                EntityListState.NoResults -> hideVideos()
+            }
+        })
+    }
+
     override fun setupUI() {
         super.setupUI()
+        videoAdapter = VideosAdapter(context!!) { video -> goToVideoSreen(video)}
         sv_contents.visibility = View.GONE
         iv_back.setOnClickListener { activity?.finish() }
     }
@@ -109,6 +150,14 @@ class DetailFragment : BaseFragment() {
 
     private fun hideLoading() {
         pb_loading.visibility = View.GONE
+    }
+
+    private fun showVideosLoading() {
+
+    }
+
+    private fun hideVideosLoading() {
+
     }
 
     private fun showResult(movie : Movie) {
@@ -172,6 +221,17 @@ class DetailFragment : BaseFragment() {
         return view
     }
 
+    private fun showVideos(videos : List<Video>) {
+        ll_videosContainer.visibility = View.VISIBLE
+        videoAdapter.setVideos(videos.filter { video -> video.site == VideoSite.YouTube })
+        rv_videos.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        rv_videos.adapter = videoAdapter
+    }
+
+    private fun hideVideos() {
+        ll_videosContainer.visibility = View.GONE
+    }
+
     private fun showNotFoundDialog() {
         AlertDialog.Builder(context)
                 .setTitle(R.string.error_dialog_title)
@@ -187,6 +247,14 @@ class DetailFragment : BaseFragment() {
 
     override fun getNoConnectionView(): View? {
        return include_no_connection
+    }
+
+    private fun goToVideoSreen(video : Video) {
+        if (context == null) { return }
+
+        val intent = Intent(context, YouTubeActivity::class.java)
+        intent.putExtra(YouTubeActivity.youtubeKeyExtra, video.key)
+        startActivity(intent)
     }
 
 }

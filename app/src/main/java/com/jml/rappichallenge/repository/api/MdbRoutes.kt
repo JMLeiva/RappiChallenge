@@ -17,6 +17,7 @@ internal object MdbRoutes {
         const val TopRated = "top_rated"
         const val Upcoming = "upcoming"
         const val Movie = "movie"
+        const val Videos = "videos"
     }
 
     internal object QKey {

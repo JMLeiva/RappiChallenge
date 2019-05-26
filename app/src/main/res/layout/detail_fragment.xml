@@ -176,6 +176,12 @@
                     style="@style/Text_Header6"/>
 
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_videos"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"/>
 
 
             </LinearLayout>
