@@ -15,6 +15,6 @@ interface MdbApi {
     fun getTopRatedMovies(language: Language, page : Int, callback: ApiCallback<MovieSearchResponse>)
     fun getUpcomingMovies(language: Language, page : Int, callback: ApiCallback<MovieSearchResponse>)
 
-    fun getMovie(id : Int, callback: ApiCallback<Movie>)
+    fun getMovie(id : Int, language: Language, callback: ApiCallback<Movie>)
     fun getVideos(movieId: Int, buildCallback: ApiCallback<VideoResponse>)
 }

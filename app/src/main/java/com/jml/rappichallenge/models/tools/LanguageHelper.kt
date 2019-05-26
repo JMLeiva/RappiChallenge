@@ -1,16 +1,19 @@
 package com.jml.rappichallenge.models.tools
 
-import com.jml.rappichallenge.R
-
-import androidx.annotation.StringRes
+import com.jml.rappichallenge.models.enums.Language
+import java.util.*
 
 object LanguageHelper {
-    @StringRes
-    fun getLanguageResNameByCode(code: String): Int {
-        // TODO usar locale para esto?
+
+    fun getLanguagByCode(code: String): Language {
+
         return when (code) {
-            "en" -> R.string.lan_english
-            else -> 0
+            "es" -> Language.Spanish
+            "en" -> Language.English
+            else -> Language.English
         }
     }
+
+    val userLanaguage : Language
+        get() = getLanguagByCode(Locale.getDefault().language)
 }

@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">RappiChallenge</string>
+    <string name="author_splash">Por Juan Martin Leiva</string>
+    <string name="lan_english">Ingles</string>
+    <string name="search_noConnectionTextTitle">"No tienes internet!"</string>
+    <string name="search_noConnectionTextBody">Revisa tu conexión a internet para continuar navegando</string>
+    <string name="retry">Reintentar</string>
+    <string name="no_vote">NR</string>
+    <string name="search_screen_title">RappiChallenge</string>
+    <string name="sorting_popularity">Popularidad</string>
+    <string name="sorting_date">Proximos</string>
+    <string name="sorting_rating">Más votados</string>
+    <string name="placeholder_description">As the Avengers and their allies have continued to protect the world from threats too large for any one hero to handle, a new danger has emerged from the cosmic shadows: Thanos. A despot of intergalactic infamy, his goal is to collect all six Infinity Stones, artifacts of unimaginable power, and use them to inflict his twisted will on all of reality. Everything the Avengers have fought for has led up to this moment - the fate of Earth and existence itself has never been more uncertain.</string>
+    <string name="placeholder_date">December 14, 2018</string>
+    <string name="placeholder_title">Avengers, Infinity War</string>
+    <string name="genres">Generos</string>
+    <string name="placeholder_genre">Action</string>
+    <string name="videos">Trailers</string>
+    <string name="error_dialog_title">Atención!</string>
+    <string name="not_found_dialog_body">El contenido que buscas no fue encontrado</string>
+    <string name="sort_by">Ordenar por:</string>
+    <string name="vote_hipenation">%</string>
+    <string name="menu_search">Buscar</string>
+    <string name="search_hint">Buscar título</string>
+</resources>

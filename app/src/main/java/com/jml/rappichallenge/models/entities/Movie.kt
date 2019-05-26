@@ -111,15 +111,4 @@ class Movie internal constructor(internal val dto: MovieDTO) {
             return Movie(dto)
         }
     }
-
-    object FormatHelper {
-        fun getFormmatedLanguage(context: Context, languageCode: String): String {
-            val id = LanguageHelper.getLanguageResNameByCode(languageCode)
-
-            return if (id == 0) {
-                ""
-            } else context.getString(id)
-
-        }
-    }
 }
