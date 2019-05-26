@@ -1,9 +1,6 @@
 package com.jml.rappichallenge.models.dtos
 
-import io.realm.RealmList
-import io.realm.RealmObject
-
-open class VideoResponseDTO : RealmObject() {
+open class VideoResponseDTO {
     internal var id: Int = 0
-    internal var results: RealmList<VideoDTO> = RealmList()
+    internal var results: List<VideoDTO> = ArrayList()
 }

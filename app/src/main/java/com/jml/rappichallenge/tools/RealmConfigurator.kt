@@ -18,7 +18,7 @@ object RealmConfigurator {
         var realm: Realm
 
         try {
-            realm = Realm.getInstance(realmConfig)
+            realm = Realm.getDefaultInstance()
             realm.close()
         } catch (e: Exception) {
             Realm.deleteRealm(realmConfig)

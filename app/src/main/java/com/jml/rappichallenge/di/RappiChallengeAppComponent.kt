@@ -13,7 +13,8 @@ import javax.inject.Singleton
     AndroidInjectionModule::class,
     RappiChallengeAppModule::class,
     ViewModelModule::class,
-    BuildersModule::class])
+    BuildersModule::class,
+    RealmModule::class])
 
 interface RappiChallengeAppComponent : AndroidInjector<RappiChallengeApplication> {
 

@@ -4,17 +4,22 @@
               android:layout_width="180dp"
               android:layout_height="match_parent">
 
-    <com.google.android.youtube.player.YouTubeThumbnailView
-        android:id="@+id/yv_thumbnail"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"/>
+        android:layout_marginEnd="4dp"
+        android:background="@color/black">
 
-    <ImageView
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:src="@drawable/ic_baseline_play_circle_outline_24px"
-        android:layout_gravity="center"/>
+        <com.google.android.youtube.player.YouTubeThumbnailView
+            android:id="@+id/yv_thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
+        <ImageView
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:src="@drawable/ic_baseline_play_circle_outline_24px"
+            android:layout_gravity="center"/>
+    </FrameLayout>
 </FrameLayout>

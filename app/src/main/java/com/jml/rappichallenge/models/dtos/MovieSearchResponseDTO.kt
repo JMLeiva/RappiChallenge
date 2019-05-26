@@ -1,11 +1,8 @@
 package com.jml.rappichallenge.models.dtos
 
-import io.realm.RealmList
-import io.realm.RealmObject
-
-open class MovieSearchResponseDTO : RealmObject() {
+open class MovieSearchResponseDTO  {
     internal var page: Int = 0
     internal var total_results: Int = 0
     internal var total_pages: Int = 0
-    internal var results: RealmList<MovieDTO>? = null
+    internal var results: MutableList<MovieDTO>? = null
 }

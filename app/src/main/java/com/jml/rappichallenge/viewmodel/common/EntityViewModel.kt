@@ -19,5 +19,5 @@ abstract class EntityViewModel<T>(application: Application) : BaseViewModel<T>(a
         }
     }
 
-    protected abstract fun stateForResult(input: T): EntityState
+    protected abstract fun stateForResult(input: T?): EntityState
 }

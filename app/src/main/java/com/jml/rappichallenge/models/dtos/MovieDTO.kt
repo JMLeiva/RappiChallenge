@@ -1,10 +1,11 @@
 package com.jml.rappichallenge.models.dtos
 
-import com.jml.rappichallenge.models.entities.Namable
 import io.realm.RealmList
 import io.realm.RealmObject
+import io.realm.annotations.PrimaryKey
 
 open class MovieDTO : RealmObject() {
+    @PrimaryKey
     internal var id: Int = 0
     internal var vote_count: Int = 0
     internal var video: Boolean = false

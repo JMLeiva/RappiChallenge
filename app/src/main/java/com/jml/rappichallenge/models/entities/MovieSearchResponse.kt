@@ -9,7 +9,7 @@ import com.jml.rappichallenge.models.dtos.MovieSearchResponseDTO
 import java.lang.reflect.Type
 import java.util.ArrayList
 
-class MovieSearchResponse internal constructor(private val dto: MovieSearchResponseDTO) {
+class MovieSearchResponse internal constructor(internal val dto: MovieSearchResponseDTO) {
 
     val page: Int
         get() = dto.page

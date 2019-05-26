@@ -1,14 +1,14 @@
 package com.jml.rappichallenge.repository.memory
 
-class MemoryCacheImpl<T> : MemoryCache<T> {
+open class MemoryCacheImpl<T> : MemoryCache<T> {
 
     private var map : MutableMap<String, MemoryCacheWrapper<T>> = HashMap()
 
-    override fun save(data: T, key: String, expiry: ExpiryPolicy) {
+    @Synchronized override fun save(data: T, key: String, expiry: ExpiryPolicy) {
         map[key] = MemoryCacheWrapper(data, expiry)
     }
 
-    override fun load(key: String): T? {
+    @Synchronized override fun load(key: String): T? {
         val wrapper = map[key] ?: return null
 
         if ( wrapper.expirationPolicy.isExpired() ) {
@@ -19,7 +19,7 @@ class MemoryCacheImpl<T> : MemoryCache<T> {
         return wrapper.data
     }
 
-    override fun loadAll(): List<T> {
+    @Synchronized override fun loadAll(): List<T> {
         clearExpired()
         return map.values.map { wrapper -> wrapper.data}
     }

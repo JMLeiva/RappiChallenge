@@ -54,7 +54,7 @@ class MovieViewModel @Inject constructor(application: Application, private val m
         }
     }
 
-    override fun stateForResult(input: Movie): EntityState {
+    override fun stateForResult(input: Movie?): EntityState {
         return if (input != null) {
             EntityState.Successful
         } else {

@@ -16,7 +16,7 @@ import java.util.ArrayList
 import java.util.Date
 import java.util.Locale
 
-class Movie internal constructor(private val dto: MovieDTO) {
+class Movie internal constructor(internal val dto: MovieDTO) {
 
     val id: Int
         get() = dto.id
