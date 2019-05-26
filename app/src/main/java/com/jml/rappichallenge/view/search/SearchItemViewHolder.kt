@@ -1,18 +1,13 @@
 package com.jml.rappichallenge.view.search
 
-import android.animation.ArgbEvaluator
 import android.content.Context
-import android.graphics.PorterDuff
-import android.os.Build
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 
 import com.jmleiva.pagedrecyclerview.PagedViewHolder
 
-import butterknife.ButterKnife
 import com.jml.rappichallenge.GlideApp
 import com.jml.rappichallenge.R
 import com.jml.rappichallenge.models.entities.Movie
@@ -21,7 +16,7 @@ import com.jml.rappichallenge.models.tools.DateHelper
 import com.jml.rappichallenge.tools.PictureUrlBuilder
 import com.jml.rappichallenge.tools.VoteViewHelper
 
-class SearchItemViewHolder internal constructor(itemView: View, callback: (View, Int) -> Unit) : PagedViewHolder(itemView), View.OnClickListener  {
+class SearchItemViewHolder internal constructor(itemView: View, val callback: (View, Int) -> Unit) : PagedViewHolder(itemView), View.OnClickListener  {
 
     var iv_cover : ImageView
     var tv_title : TextView
@@ -30,11 +25,7 @@ class SearchItemViewHolder internal constructor(itemView: View, callback: (View,
     var tv_releaseDate : TextView
     var tv_description : TextView
 
-    val callback : (View, Int) -> Unit
-
     init {
-        ButterKnife.bind(this, itemView)
-        this.callback = callback
         itemView.setOnClickListener(this)
         iv_cover = itemView.findViewById(R.id.iv_cover)
         tv_title = itemView.findViewById(R.id.tv_title)

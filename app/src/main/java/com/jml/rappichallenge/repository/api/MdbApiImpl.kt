@@ -2,9 +2,7 @@ package com.jml.rappichallenge.repository.api
 
 import com.google.gson.GsonBuilder
 import com.jml.rappichallenge.BuildConfig
-import com.jml.rappichallenge.models.entities.Movie
-import com.jml.rappichallenge.models.entities.MovieSearchResponse
-import com.jml.rappichallenge.models.entities.Namable
+import com.jml.rappichallenge.models.entities.*
 import com.jml.rappichallenge.models.enums.Language
 import com.jml.rappichallenge.models.enums.Sorting
 
@@ -57,6 +55,11 @@ class MdbApiImpl @Inject constructor() : MdbApi {
         fun getMovie(@Path("movie_id") movieId : Int,
                      @Query(MdbRoutes.QKey.ApiKey) apiKey: String) : Call<Movie>
 
+        @GET(MdbRoutes.Version.V3 + "/" + MdbRoutes.Path.Movie + "/{movie_id}/" + MdbRoutes.Path.Videos)
+        fun getVideos(@Path("movie_id") movieId : Int,
+                     @Query(MdbRoutes.QKey.ApiKey) apiKey: String) : Call<VideoResponse>
+
+
     }
 
     init {
@@ -78,6 +81,8 @@ class MdbApiImpl @Inject constructor() : MdbApi {
                 .registerTypeAdapter(Namable::class.java, Namable.Deserializer())
                 .registerTypeAdapter(Movie::class.java, Movie.Deserializer())
                 .registerTypeAdapter(MovieSearchResponse::class.java, MovieSearchResponse.Deserializer())
+                .registerTypeAdapter(Video::class.java, Video.Deserializer())
+                .registerTypeAdapter(VideoResponse::class.java, VideoResponse.Deserializer())
 
         return Retrofit.Builder()
                 .baseUrl(MdbRoutes.RootUrl)
@@ -89,7 +94,7 @@ class MdbApiImpl @Inject constructor() : MdbApi {
 
     override fun discoverMovie(language: Language, sorting: Sorting, page: Int,
                                callback: ApiCallback<MovieSearchResponse>) {
-        val call = service.search(BuildConfig.ApiKey,
+        val call = service.search(BuildConfig.MdbApiKey,
                 MdbRoutes.LanguageCode.fromLanguage(language),
                 MdbRoutes.SortingCode.fromSorting(sorting),
                 false,
@@ -100,14 +105,14 @@ class MdbApiImpl @Inject constructor() : MdbApi {
 
     override fun getPopularMovies(language: Language, page: Int,
                                callback: ApiCallback<MovieSearchResponse>) {
-        val call = service.getPopularMovies(BuildConfig.ApiKey,
+        val call = service.getPopularMovies(BuildConfig.MdbApiKey,
                 MdbRoutes.LanguageCode.fromLanguage(language), page)
 
         makeCall(call, callback)
     }
     override fun getTopRatedMovies(language: Language, page: Int,
                                   callback: ApiCallback<MovieSearchResponse>) {
-        val call = service.getTopRatedMovies(BuildConfig.ApiKey,
+        val call = service.getTopRatedMovies(BuildConfig.MdbApiKey,
                 MdbRoutes.LanguageCode.fromLanguage(language), page)
 
         makeCall(call, callback)
@@ -115,7 +120,7 @@ class MdbApiImpl @Inject constructor() : MdbApi {
 
     override fun getUpcomingMovies(language: Language, page: Int,
                                   callback: ApiCallback<MovieSearchResponse>) {
-        val call = service.getUpcomingMovies(BuildConfig.ApiKey,
+        val call = service.getUpcomingMovies(BuildConfig.MdbApiKey,
                 MdbRoutes.LanguageCode.fromLanguage(language), page)
 
         makeCall(call, callback)
@@ -123,7 +128,13 @@ class MdbApiImpl @Inject constructor() : MdbApi {
 
 
     override fun getMovie(id: Int, callback: ApiCallback<Movie>) {
-        val call = service.getMovie(id, BuildConfig.ApiKey)
+        val call = service.getMovie(id, BuildConfig.MdbApiKey)
+        makeCall(call, callback)
+    }
+
+
+    override fun getVideos(movieId: Int, callback: ApiCallback<VideoResponse>) {
+        val call = service.getVideos(movieId, BuildConfig.MdbApiKey)
         makeCall(call, callback)
     }
 

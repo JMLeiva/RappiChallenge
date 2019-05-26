@@ -2,6 +2,7 @@ package com.jml.rappichallenge.repository.api
 
 import com.jml.rappichallenge.models.entities.Movie
 import com.jml.rappichallenge.models.entities.MovieSearchResponse
+import com.jml.rappichallenge.models.entities.VideoResponse
 import com.jml.rappichallenge.models.enums.Language
 import com.jml.rappichallenge.models.enums.Sorting
 
@@ -15,4 +16,5 @@ interface MdbApi {
     fun getUpcomingMovies(language: Language, page : Int, callback: ApiCallback<MovieSearchResponse>)
 
     fun getMovie(id : Int, callback: ApiCallback<Movie>)
+    fun getVideos(movieId: Int, buildCallback: ApiCallback<VideoResponse>)
 }

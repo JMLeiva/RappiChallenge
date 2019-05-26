@@ -1,14 +1,17 @@
 package com.jml.rappichallenge.models.entities
 
-import android.content.Context
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
 import com.google.gson.JsonParseException
+import com.jml.rappichallenge.models.enums.VideoSite
 import java.lang.reflect.Type
 
 
 class Video internal constructor(private val dto: DTO) {
+
+    val key: String
+        get() = dto.key
 
     val id: String
         get() = dto.id
@@ -18,6 +21,14 @@ class Video internal constructor(private val dto: DTO) {
 
     val size: Int
         get() = dto.size
+
+    val site : VideoSite
+        get () {
+            return when (dto.site) {
+                VideoSite.YouTube.siteName -> VideoSite.YouTube
+                else -> VideoSite.Other
+            }
+        }
 
     internal data class DTO (
             internal val id: String,
