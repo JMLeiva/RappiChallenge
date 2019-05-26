@@ -7,6 +7,7 @@ import androidx.lifecycle.Transformations
 import com.jml.rappichallenge.models.entities.Movie
 import com.jml.rappichallenge.models.enums.ErrorCode
 import com.jml.rappichallenge.models.enums.RequestState
+import com.jml.rappichallenge.models.other.GetByIdQuery
 import com.jml.rappichallenge.repository.ErrorWrapper
 import com.jml.rappichallenge.repository.movies.MoviesRepository
 import com.jml.rappichallenge.tools.ConnectionManager
@@ -19,12 +20,13 @@ class MovieViewModel @Inject constructor(application: Application, private val m
     @Inject
     lateinit var connectionManager : ConnectionManager
 
-    private var itemIdInput: MutableLiveData<Int>? = null
+    private var itemIdInput: MutableLiveData<GetByIdQuery>? = null
+    private var rawIdInput = GetByIdQuery()
 
     override fun createDataObservable(): LiveData<Movie> {
         itemIdInput = MutableLiveData()
 
-        return Transformations.switchMap<Int, Movie>(itemIdInput!!) { id ->
+        return Transformations.switchMap<GetByIdQuery, Movie>(itemIdInput!!) { id ->
 
             if(id == null){
                 errorWrapperObservable.value = ErrorWrapper(ErrorCode.NotFound.code, "Not Found")
@@ -37,9 +39,9 @@ class MovieViewModel @Inject constructor(application: Application, private val m
         }
     }
 
-    private fun getTransformationLiveData(id: Int): LiveData<Movie> {
+    private fun getTransformationLiveData(query: GetByIdQuery): LiveData<Movie> {
 
-        val searchLiveData = moviesRepository.getById(id)
+        val searchLiveData = moviesRepository.getById(query)
 
         return Transformations.map(searchLiveData) { input ->
             if (input.isSuccessfull) {
@@ -65,8 +67,12 @@ class MovieViewModel @Inject constructor(application: Application, private val m
     }
 
     fun setItemId(itemId: Int?) {
+        if(itemId == null) {
+            return
+        }
 
-        this.itemIdInput?.value = itemId
+        rawIdInput.id = itemId
+        this.itemIdInput?.value = rawIdInput
     }
 
     fun retry() {

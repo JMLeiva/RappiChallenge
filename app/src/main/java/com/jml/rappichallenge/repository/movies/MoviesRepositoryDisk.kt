@@ -8,7 +8,8 @@ import com.jml.rappichallenge.models.entities.Movie
 import com.jml.rappichallenge.models.entities.MovieSearchResponse
 import com.jml.rappichallenge.models.entities.VideoResponse
 import com.jml.rappichallenge.models.enums.ErrorCode
-import com.jml.rappichallenge.models.other.SearchQuery
+import com.jml.rappichallenge.models.other.GetByIdQuery
+import com.jml.rappichallenge.models.other.GetMoviesQuery
 import com.jml.rappichallenge.repository.BaseRepository
 import com.jml.rappichallenge.repository.ResponseWrapper
 import com.jml.rappichallenge.tools.observeOnce
@@ -23,15 +24,15 @@ class MoviesRepositoryDisk @Inject constructor(val parentRepository: MoviesRepos
         val pageSize = 20
     }
 
-    override fun getPopularMovies(searchQuery: SearchQuery) : LiveData<ResponseWrapper<MovieSearchResponse>> {
-        val liveData = parentRepository.getPopularMoviesMutable(searchQuery)
+    override fun getPopularMovies(getMoviesQuery: GetMoviesQuery) : LiveData<ResponseWrapper<MovieSearchResponse>> {
+        val liveData = parentRepository.getPopularMoviesMutable(getMoviesQuery)
 
         liveData.observeOnce(object : Observer<ResponseWrapper<MovieSearchResponse>> {
             override fun onChanged(responseWrapper : ResponseWrapper<MovieSearchResponse>?) {
                 if (responseWrapper?.isSuccessfull == true) {
                     saveMovieResponse(responseWrapper.getData())
                 } else {
-                    getSortedFromDisk("popularity", searchQuery.page) { responseWrapper ->
+                    getSortedFromDisk("popularity", getMoviesQuery.page) { responseWrapper ->
                         liveData.value = responseWrapper
                     }
                 }
@@ -41,16 +42,16 @@ class MoviesRepositoryDisk @Inject constructor(val parentRepository: MoviesRepos
         return liveData
     }
 
-    override fun getTopRatedMovies(searchQuery: SearchQuery) : LiveData<ResponseWrapper<MovieSearchResponse>> {
+    override fun getTopRatedMovies(getMoviesQuery: GetMoviesQuery) : LiveData<ResponseWrapper<MovieSearchResponse>> {
 
-        val liveData = parentRepository.getTopRatedMoviesMutable(searchQuery)
+        val liveData = parentRepository.getTopRatedMoviesMutable(getMoviesQuery)
 
         liveData.observeOnce(object : Observer<ResponseWrapper<MovieSearchResponse>> {
             override fun onChanged(responseWrapper : ResponseWrapper<MovieSearchResponse>?) {
                 if (responseWrapper?.isSuccessfull == true) {
                     saveMovieResponse(responseWrapper.getData())
                 } else {
-                    getSortedFromDisk("vote_average", searchQuery.page) { responseWrapper ->
+                    getSortedFromDisk("vote_average", getMoviesQuery.page) { responseWrapper ->
                         liveData.value = responseWrapper
                     }
                 }
@@ -60,15 +61,15 @@ class MoviesRepositoryDisk @Inject constructor(val parentRepository: MoviesRepos
         return liveData
     }
 
-    override fun getUpcomingMovies(searchQuery: SearchQuery) : LiveData<ResponseWrapper<MovieSearchResponse>> {
-        val liveData = parentRepository.getUpcomingMoviesMutable(searchQuery)
+    override fun getUpcomingMovies(getMoviesQuery: GetMoviesQuery) : LiveData<ResponseWrapper<MovieSearchResponse>> {
+        val liveData = parentRepository.getUpcomingMoviesMutable(getMoviesQuery)
 
         liveData.observeOnce(object : Observer<ResponseWrapper<MovieSearchResponse>> {
             override fun onChanged(responseWrapper : ResponseWrapper<MovieSearchResponse>?) {
                 if (responseWrapper?.isSuccessfull == true) {
                     saveMovieResponse(responseWrapper.getData())
                 } else {
-                    getSortedFromDisk("release_date", searchQuery.page) { responseWrapper ->
+                    getSortedFromDisk("release_date", getMoviesQuery.page) { responseWrapper ->
                         liveData.value = responseWrapper
                     }
                 }
@@ -78,15 +79,15 @@ class MoviesRepositoryDisk @Inject constructor(val parentRepository: MoviesRepos
         return liveData
     }
 
-    override fun getById(id : Int) : LiveData<ResponseWrapper<Movie>> {
-        val liveData = parentRepository.getByIdMutable(id)
+    override fun getById(query : GetByIdQuery) : LiveData<ResponseWrapper<Movie>> {
+        val liveData = parentRepository.getByIdMutable(query)
 
         liveData.observeOnce(object : Observer<ResponseWrapper<Movie>> {
             override fun onChanged(responseWrapper : ResponseWrapper<Movie>?) {
                 if (responseWrapper?.isSuccessfull == true) {
                     saveMovie(responseWrapper.getData())
                 } else {
-                    getFromDisk(id) { responseWrapper ->
+                    getFromDisk(query.id) { responseWrapper ->
                         liveData.value = responseWrapper
                     }
                 }
@@ -96,8 +97,8 @@ class MoviesRepositoryDisk @Inject constructor(val parentRepository: MoviesRepos
         return liveData
     }
 
-    override fun getVideos(movieId: Int): LiveData<ResponseWrapper<VideoResponse>> {
-        return parentRepository.getVideos(movieId)
+    override fun getVideos(query : GetByIdQuery): LiveData<ResponseWrapper<VideoResponse>> {
+        return parentRepository.getVideos(query)
     }
 
     private fun saveMovie(movie : Movie) {
