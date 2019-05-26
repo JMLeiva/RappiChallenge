@@ -103,7 +103,8 @@
                 app:layout_constraintEnd_toStartOf="@id/tv_description"
                 tools:src="@drawable/ic_photo_96dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="4dp"/>
+                android:layout_marginEnd="4dp"
+                android:layout_marginStart="8dp"/>
 
             <TextView
                 android:id="@+id/tv_description"
