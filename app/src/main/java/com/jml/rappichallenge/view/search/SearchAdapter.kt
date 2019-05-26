@@ -30,12 +30,28 @@ class SearchAdapter(private var context: Context, private var callback: (Movie) 
         notifyDataSetChanged()
     }
 
-    fun setItems(list: List<Movie>) {
+    // returns if seting this items has any effect (aka, wont be filtered)
+    // this is a workaroud to avoid an ugly animation glitch when a new page is loaded and then filtered completely
+    fun setItems(list: List<Movie>) : Boolean {
+
+        val allFiltered = newListIsAllFiltered(list)
 
         this.items.clear()
         this.items.addAll(list)
 
-        notifyDataSetChanged()
+
+        if(!allFiltered){
+            notifyDataSetChanged()
+            return true
+        }
+
+        return false
+    }
+
+    fun newListIsAllFiltered(list: List<Movie>) : Boolean {
+        val diff = list.filter { itemA -> items.find { itemB -> itemA.id == itemB.id} == null }
+
+        return filtered(diff).isEmpty()
     }
 
     override fun getPagedItemCount(): Int {

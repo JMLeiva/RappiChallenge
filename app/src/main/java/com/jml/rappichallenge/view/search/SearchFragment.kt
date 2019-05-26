@@ -132,7 +132,7 @@ class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator, Searc
         viewModel.entityListStateMutableLiveData.observe(this, Observer<EntityListState> { entityListState ->
             swiperefresh.isRefreshing = false
             showResults()
-            adapter.stopLoading()
+
 
             when (entityListState) {
                 EntityListState.Successful -> {
@@ -141,18 +141,30 @@ class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator, Searc
                         refreshListWithResults()
                     }
                 }
-                EntityListState.NoConnection -> showNoConnection()
-                EntityListState.NoResults -> showEmtpyState()
+                EntityListState.NoConnection -> {
+                    showNoConnection()
+                    adapter.stopLoading()
+                }
+                EntityListState.NoResults -> {
+                    showEmtpyState()
+                    adapter.stopLoading()
+                }
             }
         })
     }
 
     private fun refreshListWithResults() {
-        adapter.setItems(searchViewModel.data!!.result)
+        if( adapter.setItems(searchViewModel.data!!.result) ) {
 
-        if ( pendingScrollToPosition != null) {
-            rv_list.scrollToPosition(pendingScrollToPosition!!)
-            pendingScrollToPosition = null
+            if (pendingScrollToPosition != null) {
+                rv_list.scrollToPosition(pendingScrollToPosition!!)
+                pendingScrollToPosition = null
+            }
+
+            adapter.stopLoading()
+        }
+        else {
+            searchViewModel.advance()
         }
     }
 
