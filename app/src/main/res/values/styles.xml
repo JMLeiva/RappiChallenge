@@ -18,36 +18,42 @@
     <style name="Text_Title">
         <item name="android:textSize">32sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/text_dark</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="Text_Header5">
         <item name="android:textSize">24sp</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:textColor">@color/text_dark</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="Text_Header6">
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/text_dark</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="Text_Body1">
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:textColor">@color/text_dark</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="Text_Body2">
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/text_dark</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="Text_Caption">
         <item name="android:textSize">12sp</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:textColor">@color/text_dark</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="Text_Tiny">
+        <item name="android:textSize">8sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 </resources>

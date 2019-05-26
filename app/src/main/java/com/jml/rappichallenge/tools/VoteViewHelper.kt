@@ -27,7 +27,7 @@ object VoteViewHelper {
             progressBar.progress = (value * 10).toInt()
         }
         progressBar.progressDrawable.setColorFilter(getColorForValue(context, value / 10.0f), PorterDuff.Mode.SRC_IN)
-        textView.text = (value * 10).toInt().toString()
+        textView.text = value.toString()
     }
 
     private fun setVoteNoValue(progressBar : ProgressBar, textView : TextView, context : Context) {

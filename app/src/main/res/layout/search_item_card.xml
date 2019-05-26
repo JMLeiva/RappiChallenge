@@ -13,6 +13,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+
+            android:background="@color/black"
              >
 
         <ImageView
@@ -82,7 +84,7 @@
             android:maxLines="5"
             android:ellipsize="end"
             style="@style/Text_Body1"
-            android:textColor="@color/text_light"
+            android:textColor="@color/white"
             tools:text="@string/placeholder_description"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
