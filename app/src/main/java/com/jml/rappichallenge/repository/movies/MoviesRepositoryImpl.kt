@@ -10,9 +10,7 @@ import com.jml.rappichallenge.repository.BaseRepository
 import com.jml.rappichallenge.repository.ResponseWrapper
 import com.jml.rappichallenge.repository.api.MdbApi
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class MoviesRepositoryImpl @Inject constructor(api : MdbApi) : BaseRepository(api), MoviesRepository {
 
 

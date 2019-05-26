@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import com.jml.rappichallenge.di.DaggerRappiChallengeAppComponent
 import com.jml.rappichallenge.di.RappiChallengeAppComponent
+import com.jml.rappichallenge.tools.RealmConfigurator
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
@@ -21,6 +22,8 @@ class RappiChallengeApplication : Application(), HasActivityInjector {
 
         component = DaggerRappiChallengeAppComponent.builder().application(this).build()
         component.inject(this)
+
+        RealmConfigurator.configureWithContext(this)
     }
 
     override fun activityInjector(): AndroidInjector<Activity>? {
