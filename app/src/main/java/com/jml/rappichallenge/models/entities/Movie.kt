@@ -6,6 +6,7 @@ import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
 import com.google.gson.JsonParseException
+import com.jml.rappichallenge.models.dtos.MovieDTO
 import com.jml.rappichallenge.models.tools.LanguageHelper
 
 import java.lang.reflect.Type
@@ -15,7 +16,7 @@ import java.util.ArrayList
 import java.util.Date
 import java.util.Locale
 
-class Movie internal constructor(private val dto: DTO) {
+class Movie internal constructor(internal val dto: MovieDTO) {
 
     val id: Int
         get() = dto.id
@@ -67,7 +68,7 @@ class Movie internal constructor(private val dto: DTO) {
         }
 
     val genres: List<Namable>
-        get() = ArrayList(dto.genres!!)
+        get() = dto.genres?.map { namableDTO -> Namable(namableDTO) } ?: ArrayList()
 
     val budget: Int
         get() = dto.budget
@@ -85,13 +86,13 @@ class Movie internal constructor(private val dto: DTO) {
         get() = dto.runtime
 
     val productionCompanies: List<Namable>
-        get() = ArrayList(dto.production_companies!!)
+        get() = dto.production_companies?.map { namableDTO -> Namable(namableDTO) } ?: ArrayList()
 
     val productionCountries: List<Namable>
-        get() = ArrayList(dto.production_countries!!)
+        get() = dto.production_countries?.map { namableDTO -> Namable(namableDTO) } ?: ArrayList()
 
     val spokenLanguages: List<Namable>
-        get() = ArrayList(dto.spoken_languages!!)
+        get() = dto.spoken_languages?.map { namableDTO -> Namable(namableDTO) } ?: ArrayList()
 
     val status: String?
         get() = dto.status
@@ -103,37 +104,10 @@ class Movie internal constructor(private val dto: DTO) {
         return dto.video
     }
 
-    internal data class DTO (
-            internal val vote_count: Int = 0,
-            internal val id: Int = 0,
-            internal val video: Boolean = false,
-            internal val vote_average: Float?,
-            internal val title: String? = null,
-            internal val popularity: Float = 0.toFloat(),
-            internal val poster_path: String? = null,
-            internal val backdrop_path: String? = null,
-            internal val original_language: String? = null,
-            internal val original_title: String? = null,
-            internal val genres: List<Namable>? = null,
-            internal val adult: Boolean = false,
-            internal val overview: String? = null,
-            internal val release_date: String? = null,
-            internal val budget: Int = 0,
-            internal val revenue: Int = 0,
-            internal val homepage: String? = null,
-            internal val imdbId: String? = null,
-            internal val runtime: Int = 0,
-            internal val production_companies: List<Namable>? = null, // TODO <- DTO mas completo tiene imagen
-            internal val production_countries: List<Namable>? = null,
-            internal val spoken_languages: List<Namable>? = null,
-            internal val status: String? = null,
-            internal val tagline: String? = null
-    )
-
     class Deserializer : JsonDeserializer<Movie> {
         @Throws(JsonParseException::class)
         override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): Movie {
-            val dto = context.deserialize<Movie.DTO>(json, Movie.DTO::class.java)
+            val dto = context.deserialize<MovieDTO>(json, MovieDTO::class.java)
             return Movie(dto)
         }
     }

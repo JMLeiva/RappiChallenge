@@ -23,12 +23,12 @@ class ResponseWrapper<T> private constructor() {
         isSuccessfull = false
     }
 
-    fun getData(): T? {
+    fun getData(): T {
         if (!isSuccessfull) {
             throw IllegalStateException("Can't retrieve data from a non successfull repsonse")
         }
 
-        return data
+        return data!!
     }
 
     companion object {

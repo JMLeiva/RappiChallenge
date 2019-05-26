@@ -5,7 +5,7 @@ import com.jml.rappichallenge.RappiChallengeApplication
 import com.jml.rappichallenge.repository.api.MdbApi
 import com.jml.rappichallenge.repository.api.MdbApiImpl
 import com.jml.rappichallenge.repository.movies.MoviesRepository
-import com.jml.rappichallenge.repository.movies.MoviesRepositoryImpl
+import com.jml.rappichallenge.repository.movies.MoviesRepositoryMemory
 import dagger.Binds
 import dagger.Module
 import javax.inject.Singleton
@@ -18,8 +18,7 @@ abstract class RappiChallengeAppModule {
     abstract fun bindsApplication(application : RappiChallengeApplication) : Application
 
     @Binds
-    @Singleton
-    abstract fun bindsMovieRepository(moviesRepository: MoviesRepositoryImpl) : MoviesRepository
+    abstract fun bindsMovieRepository(moviesRepository: MoviesRepositoryMemory) : MoviesRepository
 
     @Binds
     abstract fun bindsMdbApi(api : MdbApiImpl) : MdbApi
