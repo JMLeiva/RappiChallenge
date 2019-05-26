@@ -65,7 +65,7 @@ class SearchAdapter(private var context: Context, private var callback: (Movie) 
         callback(items[position])
     }
 
-    fun filterByText(query: String) {
+    fun filterByText(query: String?) {
 
         if(this.textFilter?.equals(query) == true) { return }
         this.textFilter = query

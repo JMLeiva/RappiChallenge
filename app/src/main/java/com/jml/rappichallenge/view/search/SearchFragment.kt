@@ -32,7 +32,8 @@ class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator, Searc
 
 
     private companion object SaveStateKey {
-        val listPosition = "jml.rappichallenge.searchFragment.listPosition"
+        val stListPosition = "jml.rappichallenge.searchFragment.listPosition"
+        val stSearchText = "jml.rappichallenge.searchFragment.searchText"
     }
 
 
@@ -49,8 +50,11 @@ class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator, Searc
     private lateinit var adapter : SearchAdapter
     private lateinit var linearLayoutManager : LinearLayoutManager
     private var pendingScrollToPosition : Int? = null
+    private var searchText : String? = null
 
     internal var searchView: SearchView? = null
+
+
 
     override fun getNoConnectionView() : View? {
         return  include_no_connection
@@ -61,7 +65,8 @@ class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator, Searc
         setHasOptionsMenu(true)
 
         if (savedInstanceState != null) {
-            pendingScrollToPosition = savedInstanceState.getInt(listPosition)
+            pendingScrollToPosition = savedInstanceState.getInt(stListPosition)
+            searchText = savedInstanceState.getString(stSearchText)
         }
     }
 
@@ -87,6 +92,8 @@ class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator, Searc
 
         adapter = SearchAdapter(context!!) { movie -> onItemClick(movie) }
         adapter.paginator = this
+        adapter.filterByText(searchText)
+
         linearLayoutManager = LinearLayoutManager(context)
         rv_list.adapter = adapter
         rv_list.layoutManager = linearLayoutManager
@@ -240,7 +247,8 @@ class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator, Searc
     }
 
     override fun onSaveInstanceState(@NonNull outState: Bundle) {
-        outState.putInt(SaveStateKey.listPosition, linearLayoutManager.findFirstVisibleItemPosition())
+        outState.putInt(stListPosition, linearLayoutManager.findFirstVisibleItemPosition())
+        outState.putString(stSearchText, searchText)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -262,6 +270,16 @@ class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator, Searc
         searchView?.setOnQueryTextListener(this)
         searchView?.setOnCloseListener(this)
 
+        if(searchText != null) {
+            val copiedSearchText = searchText
+            searchMenuItem.expandActionView()
+            searchView?.post {
+                searchView?.setQuery(copiedSearchText, true)
+                searchView?.clearFocus()
+            }
+
+        }
+
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -282,6 +300,8 @@ class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator, Searc
         if (newText == null) {
             return false
         }
+
+        searchText = newText
 
         searchDebouncer.push {
             adapter.filterByText(newText)
