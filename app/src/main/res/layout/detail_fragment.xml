@@ -29,7 +29,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
            android:layout_width="match_parent"
-           android:layout_height="wrap_content">
+           android:layout_height="wrap_content"
+            android:background="@color/black">
 
             <ImageView
                 android:id="@+id/iv_backdrop"
@@ -86,11 +87,10 @@
                 android:id="@+id/tv_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/chip_background_colored_light"
+                android:background="@drawable/chip_background_colored_dark"
                 tools:text="@string/placeholder_date"
                 android:padding="8dp"
                 style="@style/Text_Body2"
-                android:textColor="@color/white"
                 app:layout_constraintBottom_toTopOf="@id/tv_title"
                 app:layout_constraintStart_toStartOf="@id/tv_title"/>
 
@@ -166,7 +166,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="8dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"

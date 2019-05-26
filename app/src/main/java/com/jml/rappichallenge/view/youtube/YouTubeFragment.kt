@@ -2,13 +2,9 @@ package com.jml.rappichallenge.view.youtube
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.youtube.player.*
 import com.jml.rappichallenge.BuildConfig
-import com.jml.rappichallenge.R
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.AndroidSupportInjection

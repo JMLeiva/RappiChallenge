@@ -11,7 +11,19 @@ import com.jmleiva.pagedrecyclerview.PagedViewHolder
 
 class SearchAdapter(private var context: Context, private var callback: (Movie) -> Unit) : PagedRecyclerViewAdapter<SearchItemViewHolder, PagedViewHolder>() {
 
-    private var items : MutableList<Movie> = ArrayList()
+    private var items: MutableList<Movie> = ArrayList()
+    private var textFilter: String? = null
+
+    private val filteredItems: List<Movie>
+        get() = filtered(items)
+
+    private fun filtered(list : List<Movie>) : List<Movie> {
+        return if (textFilter?.isEmpty() == false) {
+            list.filter { movie -> movie.title!!.contains(textFilter!!.toLowerCase(), true) }
+        } else {
+            list
+        }
+    }
 
     fun clear(){
         items.clear()
@@ -19,13 +31,15 @@ class SearchAdapter(private var context: Context, private var callback: (Movie) 
     }
 
     fun setItems(list: List<Movie>) {
+
         this.items.clear()
         this.items.addAll(list)
+
         notifyDataSetChanged()
     }
 
     override fun getPagedItemCount(): Int {
-        return items.size
+        return filteredItems.size
     }
 
     override fun onCreateNormalViewHolder(parent: ViewGroup?, viewType: Int): SearchItemViewHolder {
@@ -44,10 +58,19 @@ class SearchAdapter(private var context: Context, private var callback: (Movie) 
     }
 
     override fun onBindNormalViewHolder(holder: SearchItemViewHolder?, position: Int) {
-        holder?.setup(context, items[position])
+        holder?.setup(context, filteredItems[position])
     }
 
     private val onItemClick = { _: View , position: Int ->
         callback(items[position])
     }
+
+    fun filterByText(query: String) {
+
+        if(this.textFilter?.equals(query) == true) { return }
+        this.textFilter = query
+        notifyDataSetChanged()
+    }
+
+
 }

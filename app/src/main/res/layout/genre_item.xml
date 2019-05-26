@@ -7,7 +7,7 @@
           tools:text="@string/placeholder_genre"
           android:background="@drawable/chip_background_colored_light"
           style="@style/Text_Body2"
-          android:textColor="@color/white"
+          android:textColor="@color/text_dark"
           android:padding="8dp"
           android:layout_margin="2dp">
 

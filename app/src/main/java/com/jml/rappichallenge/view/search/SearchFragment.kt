@@ -1,10 +1,10 @@
 package com.jml.rappichallenge.view.search
 
+import android.app.SearchManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.lifecycle.Observer
@@ -23,10 +23,13 @@ import com.jmleiva.pagedrecyclerview.PagedRecyclerViewAdapter
 import kotlinx.android.synthetic.main.search_fragment.*
 import javax.inject.Inject
 import androidx.appcompat.widget.PopupMenu
+import androidx.appcompat.widget.SearchView
+import com.jml.rappichallenge.tools.Debouncer
 import com.jml.rappichallenge.view.detail.DetailActivity
 
 
-class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator {
+class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator, SearchView.OnQueryTextListener, SearchView.OnCloseListener {
+
 
     private companion object SaveStateKey {
         val listPosition = "jml.rappichallenge.searchFragment.listPosition"
@@ -40,9 +43,14 @@ class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
+
+    private val searchDebouncer = Debouncer(300)
+
     private lateinit var adapter : SearchAdapter
     private lateinit var linearLayoutManager : LinearLayoutManager
     private var pendingScrollToPosition : Int? = null
+
+    internal var searchView: SearchView? = null
 
     override fun getNoConnectionView() : View? {
         return  include_no_connection
@@ -53,7 +61,7 @@ class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator {
         setHasOptionsMenu(true)
 
         if (savedInstanceState != null) {
-            pendingScrollToPosition = savedInstanceState.getInt(SaveStateKey.listPosition)
+            pendingScrollToPosition = savedInstanceState.getInt(listPosition)
         }
     }
 
@@ -74,6 +82,8 @@ class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator {
 
     override fun setupUI() {
         super.setupUI()
+
+
 
         adapter = SearchAdapter(context!!) { movie -> onItemClick(movie) }
         adapter.paginator = this
@@ -233,4 +243,54 @@ class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator {
         outState.putInt(SaveStateKey.listPosition, linearLayoutManager.findFirstVisibleItemPosition())
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+
+        if(context == null) { return }
+
+        inflater.inflate(R.menu.search_menu, menu)
+        val searchMenuItem = menu.findItem(R.id.action_search)
+
+        val searchManager = context!!.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+
+
+        // Setup SearchView
+        searchView = searchMenuItem.actionView as SearchView
+
+        searchView?.queryHint = context!!.getString(R.string.search_hint)
+        searchView?.setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
+        searchView?.isSubmitButtonEnabled = false
+        searchView?.setOnQueryTextListener(this)
+        searchView?.setOnCloseListener(this)
+
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        if (query == null) {
+            return false
+        }
+
+        searchDebouncer.push {
+            adapter.filterByText(query)
+            showResults()
+        }
+
+        return true
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        if (newText == null) {
+            return false
+        }
+
+        searchDebouncer.push {
+            adapter.filterByText(newText)
+            showResults()
+        }
+        return true
+    }
+
+    override fun onClose(): Boolean {
+        return true
+    }
 }
