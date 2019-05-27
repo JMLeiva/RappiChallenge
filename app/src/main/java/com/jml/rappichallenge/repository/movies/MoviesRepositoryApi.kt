@@ -5,7 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import com.jml.rappichallenge.models.entities.Movie
 import com.jml.rappichallenge.models.entities.MovieSearchResponse
 import com.jml.rappichallenge.models.entities.VideoResponse
-import com.jml.rappichallenge.models.other.SearchQuery
+import com.jml.rappichallenge.models.other.GetByIdQuery
+import com.jml.rappichallenge.models.other.GetMoviesQuery
 import com.jml.rappichallenge.repository.BaseRepository
 import com.jml.rappichallenge.repository.ResponseWrapper
 import com.jml.rappichallenge.repository.api.MdbApi
@@ -13,54 +14,54 @@ import javax.inject.Inject
 
 class MoviesRepositoryApi @Inject constructor(val api : MdbApi) : BaseRepository(), MoviesRepository {
 
-    override fun getPopularMovies(searchQuery: SearchQuery) : LiveData<ResponseWrapper<MovieSearchResponse>> {
-        return getPopularMoviesMutable(searchQuery)
+    override fun getPopularMovies(getMoviesQuery: GetMoviesQuery) : LiveData<ResponseWrapper<MovieSearchResponse>> {
+        return getPopularMoviesMutable(getMoviesQuery)
     }
 
-    fun getPopularMoviesMutable(searchQuery: SearchQuery) : MutableLiveData<ResponseWrapper<MovieSearchResponse>> {
+    fun getPopularMoviesMutable(getMoviesQuery: GetMoviesQuery) : MutableLiveData<ResponseWrapper<MovieSearchResponse>> {
         val data = MutableLiveData<ResponseWrapper<MovieSearchResponse>>()
-        api.getPopularMovies(searchQuery.language, searchQuery.page, buildCallback(data))
+        api.getPopularMovies(getMoviesQuery.language, getMoviesQuery.page, buildCallback(data))
         return data
     }
 
-    override fun getTopRatedMovies(searchQuery: SearchQuery) : LiveData<ResponseWrapper<MovieSearchResponse>> {
-       return getTopRatedMoviesMutable(searchQuery)
+    override fun getTopRatedMovies(getMoviesQuery: GetMoviesQuery) : LiveData<ResponseWrapper<MovieSearchResponse>> {
+       return getTopRatedMoviesMutable(getMoviesQuery)
     }
 
-    fun getTopRatedMoviesMutable(searchQuery: SearchQuery) : MutableLiveData<ResponseWrapper<MovieSearchResponse>> {
+    fun getTopRatedMoviesMutable(getMoviesQuery: GetMoviesQuery) : MutableLiveData<ResponseWrapper<MovieSearchResponse>> {
         val data = MutableLiveData<ResponseWrapper<MovieSearchResponse>>()
-        api.getTopRatedMovies(searchQuery.language, searchQuery.page, buildCallback(data))
+        api.getTopRatedMovies(getMoviesQuery.language, getMoviesQuery.page, buildCallback(data))
         return data
     }
 
-    override fun getUpcomingMovies(searchQuery: SearchQuery) : LiveData<ResponseWrapper<MovieSearchResponse>> {
-       return getUpcomingMoviesMutable(searchQuery)
+    override fun getUpcomingMovies(getMoviesQuery: GetMoviesQuery) : LiveData<ResponseWrapper<MovieSearchResponse>> {
+       return getUpcomingMoviesMutable(getMoviesQuery)
     }
 
-    fun getUpcomingMoviesMutable(searchQuery: SearchQuery) : MutableLiveData<ResponseWrapper<MovieSearchResponse>> {
+    fun getUpcomingMoviesMutable(getMoviesQuery: GetMoviesQuery) : MutableLiveData<ResponseWrapper<MovieSearchResponse>> {
         val data = MutableLiveData<ResponseWrapper<MovieSearchResponse>>()
-        api.getUpcomingMovies(searchQuery.language, searchQuery.page, buildCallback(data))
+        api.getUpcomingMovies(getMoviesQuery.language, getMoviesQuery.page, buildCallback(data))
 
         return data
     }
 
-    override fun getById(id : Int) : LiveData<ResponseWrapper<Movie>> {
-        return getByIdMutable(id)
+    override fun getById(query : GetByIdQuery) : LiveData<ResponseWrapper<Movie>> {
+        return getByIdMutable(query)
     }
 
-    fun getByIdMutable(id : Int) : MutableLiveData<ResponseWrapper<Movie>> {
+    fun getByIdMutable(query : GetByIdQuery) : MutableLiveData<ResponseWrapper<Movie>> {
         val data = MutableLiveData<ResponseWrapper<Movie>>()
-        api.getMovie(id, buildCallback(data))
+        api.getMovie(query.id, query.language, buildCallback(data))
         return data
     }
 
-    override fun getVideos(movieId: Int): LiveData<ResponseWrapper<VideoResponse>> {
-        return getVideosMutable(movieId)
+    override fun getVideos(query : GetByIdQuery): LiveData<ResponseWrapper<VideoResponse>> {
+        return getVideosMutable(query)
     }
 
-    fun getVideosMutable(movieId: Int): MutableLiveData<ResponseWrapper<VideoResponse>> {
+    fun getVideosMutable(query : GetByIdQuery): MutableLiveData<ResponseWrapper<VideoResponse>> {
         val data = MutableLiveData<ResponseWrapper<VideoResponse>>()
-        api.getVideos(movieId, buildCallback(data))
+        api.getVideos(query.id, buildCallback(data))
         return data
     }
 }

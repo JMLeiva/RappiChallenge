@@ -53,7 +53,8 @@ class MdbApiImpl @Inject constructor() : MdbApi {
 
         @GET(MdbRoutes.Version.V3 + "/" + MdbRoutes.Path.Movie + "/{movie_id}")
         fun getMovie(@Path("movie_id") movieId : Int,
-                     @Query(MdbRoutes.QKey.ApiKey) apiKey: String) : Call<Movie>
+                     @Query(MdbRoutes.QKey.ApiKey) apiKey: String,
+                     @Query(MdbRoutes.QKey.Language) language: String) : Call<Movie>
 
         @GET(MdbRoutes.Version.V3 + "/" + MdbRoutes.Path.Movie + "/{movie_id}/" + MdbRoutes.Path.Videos)
         fun getVideos(@Path("movie_id") movieId : Int,
@@ -127,8 +128,8 @@ class MdbApiImpl @Inject constructor() : MdbApi {
     }
 
 
-    override fun getMovie(id: Int, callback: ApiCallback<Movie>) {
-        val call = service.getMovie(id, BuildConfig.MdbApiKey)
+    override fun getMovie(id : Int, language: Language, callback: ApiCallback<Movie>) {
+        val call = service.getMovie(id, MdbRoutes.LanguageCode.fromLanguage(language), BuildConfig.MdbApiKey)
         makeCall(call, callback)
     }
 

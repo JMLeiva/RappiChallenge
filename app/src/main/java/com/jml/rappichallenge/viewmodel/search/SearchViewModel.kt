@@ -5,10 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.jml.rappichallenge.models.entities.MovieSearchResponse
-import com.jml.rappichallenge.models.enums.Language
 import com.jml.rappichallenge.models.enums.RequestState
 import com.jml.rappichallenge.models.enums.Sorting
-import com.jml.rappichallenge.models.other.SearchQuery
+import com.jml.rappichallenge.models.other.GetMoviesQuery
 import com.jml.rappichallenge.repository.movies.MoviesRepository
 import com.jml.rappichallenge.tools.ConnectionManager
 import com.jml.rappichallenge.viewmodel.common.EntityListState
@@ -19,14 +18,14 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(application: Application, private val moviesRepository: MoviesRepository) : EntityListViewModel<MovieSearchResponse>(application) {
 
 
-    private var searchQueryInput: MutableLiveData<SearchQuery>? = null
-    private val rawQuery: SearchQuery = SearchQuery.Builder().sorting(Sorting.Popularity).language(Language.English).build()
+    private var getMoviesQueryInput: MutableLiveData<GetMoviesQuery>? = null
+    private val rawQuery: GetMoviesQuery = GetMoviesQuery.Builder().sorting(Sorting.Popularity).build()
     private var currentResults: MovieSearchResponse? = null
 
     val searchResponse : MovieSearchResponse?
     get() = currentResults
 
-    val query: SearchQuery?
+    val query: GetMoviesQuery?
     get() = rawQuery
 
     @Inject
@@ -47,15 +46,15 @@ class SearchViewModel @Inject constructor(application: Application, private val 
     }
 
     override fun createDataObservable(): LiveData<MovieSearchResponse> {
-        searchQueryInput = MutableLiveData()
+        getMoviesQueryInput = MutableLiveData()
 
-        return Transformations.switchMap<SearchQuery, MovieSearchResponse>(searchQueryInput!!) { query ->
+        return Transformations.switchMap<GetMoviesQuery, MovieSearchResponse>(getMoviesQueryInput!!) { query ->
             requestStateObservable.value = RequestState.Loading
             return@switchMap getTransformationLiveData(query)
         }
     }
 
-    private fun getTransformationLiveData(query: SearchQuery): LiveData<MovieSearchResponse> {
+    private fun getTransformationLiveData(query: GetMoviesQuery): LiveData<MovieSearchResponse> {
 
         val searchLiveData = when(query.sorting) {
             Sorting.Popularity -> moviesRepository.getPopularMovies(query)
@@ -84,7 +83,7 @@ class SearchViewModel @Inject constructor(application: Application, private val 
     }
 
     fun start() {
-        this.searchQueryInput?.value = rawQuery
+        this.getMoviesQueryInput?.value = rawQuery
     }
 
     fun advance() {
@@ -93,14 +92,14 @@ class SearchViewModel @Inject constructor(application: Application, private val 
         }
         else {
             rawQuery.advancePage()
-            this.searchQueryInput?.value = rawQuery
+            this.getMoviesQueryInput?.value = rawQuery
         }
     }
 
     fun resetPaging() {
         currentResults = null
         rawQuery.resetPaging()
-        this.searchQueryInput?.value = rawQuery
+        this.getMoviesQueryInput?.value = rawQuery
     }
 
     var sorting: Sorting

@@ -8,6 +8,7 @@ import androidx.lifecycle.Transformations
 import com.jml.rappichallenge.models.entities.VideoResponse
 import com.jml.rappichallenge.models.enums.ErrorCode
 import com.jml.rappichallenge.models.enums.RequestState
+import com.jml.rappichallenge.models.other.GetByIdQuery
 import com.jml.rappichallenge.repository.ErrorWrapper
 import com.jml.rappichallenge.repository.movies.MoviesRepository
 import com.jml.rappichallenge.tools.ConnectionManager
@@ -61,7 +62,7 @@ class VideoListViewModel @Inject constructor(application: Application, private v
 
     private fun getTransformationLiveData(id: Int): LiveData<VideoResponse> {
 
-        val searchLiveData = moviesRepository.getVideos(id)
+        val searchLiveData = moviesRepository.getVideos(GetByIdQuery.Builder().id(id).build())
 
         return Transformations.map(searchLiveData) { input ->
             if (input.isSuccessfull) {

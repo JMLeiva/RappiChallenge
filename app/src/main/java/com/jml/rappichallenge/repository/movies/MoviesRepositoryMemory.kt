@@ -6,7 +6,8 @@ import androidx.lifecycle.Observer
 import com.jml.rappichallenge.models.entities.Movie
 import com.jml.rappichallenge.models.entities.MovieSearchResponse
 import com.jml.rappichallenge.models.entities.VideoResponse
-import com.jml.rappichallenge.models.other.SearchQuery
+import com.jml.rappichallenge.models.other.GetByIdQuery
+import com.jml.rappichallenge.models.other.GetMoviesQuery
 import com.jml.rappichallenge.repository.BaseRepository
 import com.jml.rappichallenge.repository.ResponseWrapper
 import com.jml.rappichallenge.repository.memory.ExpiryPolicy
@@ -21,21 +22,21 @@ class MoviesRepositoryMemory @Inject constructor(val movieMemoryCache : MovieMem
         val memoryCacheSuffix : String = "MOVIE_"
     }
 
-    override fun getPopularMovies(searchQuery: SearchQuery) : LiveData<ResponseWrapper<MovieSearchResponse>> {
-        return parentRepository.getPopularMovies(searchQuery)
+    override fun getPopularMovies(getMoviesQuery: GetMoviesQuery) : LiveData<ResponseWrapper<MovieSearchResponse>> {
+        return parentRepository.getPopularMovies(getMoviesQuery)
     }
 
-    override fun getTopRatedMovies(searchQuery: SearchQuery) : LiveData<ResponseWrapper<MovieSearchResponse>> {
-        return parentRepository.getTopRatedMovies(searchQuery)
+    override fun getTopRatedMovies(getMoviesQuery: GetMoviesQuery) : LiveData<ResponseWrapper<MovieSearchResponse>> {
+        return parentRepository.getTopRatedMovies(getMoviesQuery)
     }
 
-    override fun getUpcomingMovies(searchQuery: SearchQuery) : LiveData<ResponseWrapper<MovieSearchResponse>> {
-        return parentRepository.getUpcomingMovies(searchQuery)
+    override fun getUpcomingMovies(getMoviesQuery: GetMoviesQuery) : LiveData<ResponseWrapper<MovieSearchResponse>> {
+        return parentRepository.getUpcomingMovies(getMoviesQuery)
     }
 
-    override fun getById(id : Int) : LiveData<ResponseWrapper<Movie>> {
+    override fun getById(query : GetByIdQuery) : LiveData<ResponseWrapper<Movie>> {
 
-        val movie = movieMemoryCache.load(toMemoryCacheKey(id))
+        val movie = movieMemoryCache.load(toMemoryCacheKey(query.id))
 
         if(movie != null) {
             val response = MutableLiveData<ResponseWrapper<Movie>>()
@@ -43,12 +44,12 @@ class MoviesRepositoryMemory @Inject constructor(val movieMemoryCache : MovieMem
             return response
         }
 
-        val liveData = parentRepository.getById(id)
+        val liveData = parentRepository.getById(query)
 
         liveData.observeOnce( object : Observer<ResponseWrapper<Movie>> {
             override fun onChanged(responseWrapper: ResponseWrapper<Movie>?) {
                 if (responseWrapper?.isSuccessfull == true) {
-                    movieMemoryCache.save(responseWrapper.getData(), toMemoryCacheKey(id), ExpiryPolicy.buildWithMinutes(30))
+                    movieMemoryCache.save(responseWrapper.getData(), toMemoryCacheKey(query.id), ExpiryPolicy.buildWithMinutes(30))
                 }
             }
         })
@@ -58,9 +59,9 @@ class MoviesRepositoryMemory @Inject constructor(val movieMemoryCache : MovieMem
         return liveData
     }
 
-    override fun getVideos(movieId: Int): LiveData<ResponseWrapper<VideoResponse>> {
+    override fun getVideos(query : GetByIdQuery): LiveData<ResponseWrapper<VideoResponse>> {
 
-        val videoResponse = videosMemoryCache.load(toMemoryCacheKey(movieId))
+        val videoResponse = videosMemoryCache.load(toMemoryCacheKey(query.id))
 
         if(videoResponse != null) {
             val response = MutableLiveData<ResponseWrapper<VideoResponse>>()
@@ -68,13 +69,13 @@ class MoviesRepositoryMemory @Inject constructor(val movieMemoryCache : MovieMem
             return response
         }
 
-        val liveData =  parentRepository.getVideos(movieId)
+        val liveData =  parentRepository.getVideos(query)
 
         liveData.observeOnce( object : Observer<ResponseWrapper<VideoResponse>> {
             override fun onChanged(responseWrapper: ResponseWrapper<VideoResponse>?) {
                 liveData.removeObserver(this)
                 if (responseWrapper?.isSuccessfull == true) {
-                    videosMemoryCache.save(liveData.value!!.getData(), toMemoryCacheKey(movieId), ExpiryPolicy.buildWithMinutes(30))
+                    videosMemoryCache.save(liveData.value!!.getData(), toMemoryCacheKey(query.id), ExpiryPolicy.buildWithMinutes(30))
                 }
             }
         })

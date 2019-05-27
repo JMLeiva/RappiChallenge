@@ -4,24 +4,23 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.jml.rappichallenge.models.enums.Language
 import com.jml.rappichallenge.models.enums.Sorting
+import com.jml.rappichallenge.models.tools.LanguageHelper
 
-class SearchQuery : Parcelable {
+class GetMoviesQuery : Parcelable {
 
     var page: Int = 1
         private set
 
     var sorting: Sorting = Sorting.Popularity
-
-    var language: Language = Language.English
-
-
-    protected constructor()
+    var language: Language = LanguageHelper.userLanaguage
 
     protected constructor(pIn: Parcel) {
         page = pIn.readInt()
         sorting = Sorting.valueOf(pIn.readString() ?: Sorting.Popularity.name)
         language = Language.valueOf(pIn.readString() ?: Language.English.name)
     }
+
+    constructor()
 
     fun advancePage() {
         this.page += 1
@@ -42,34 +41,34 @@ class SearchQuery : Parcelable {
     }
 
     class Builder {
-        private var builderSearchQuuery: SearchQuery = SearchQuery()
+        private var builderGetMoviesQuery: GetMoviesQuery = GetMoviesQuery()
 
         fun sorting(sorting : Sorting) : Builder {
-            builderSearchQuuery.sorting = sorting
+            builderGetMoviesQuery.sorting = sorting
             return this
         }
 
         fun language(language: Language) : Builder {
-            builderSearchQuuery.language = language
+            builderGetMoviesQuery.language = language
             return this
         }
 
-        fun build(): SearchQuery {
-            val result = SearchQuery()
-            result.page = builderSearchQuuery.page
-            result.sorting = builderSearchQuuery.sorting
-            result.language = builderSearchQuuery.language
+        fun build(): GetMoviesQuery {
+            val result = GetMoviesQuery()
+            result.page = builderGetMoviesQuery.page
+            result.sorting = builderGetMoviesQuery.sorting
+            result.language = builderGetMoviesQuery.language
 
             return result
         }
     }
 
-    companion object CREATOR : Parcelable.Creator<SearchQuery> {
-        override fun createFromParcel(`in`: Parcel): SearchQuery {
-            return SearchQuery(`in`)
+    companion object CREATOR : Parcelable.Creator<GetMoviesQuery> {
+        override fun createFromParcel(`in`: Parcel): GetMoviesQuery {
+            return GetMoviesQuery(`in`)
         }
 
-        override fun newArray(size: Int): Array<SearchQuery?> {
+        override fun newArray(size: Int): Array<GetMoviesQuery?> {
             return arrayOfNulls(size)
         }
     }
