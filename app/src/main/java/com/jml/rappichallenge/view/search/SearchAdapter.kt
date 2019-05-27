@@ -78,7 +78,7 @@ class SearchAdapter(private var context: Context, private var callback: (Movie) 
     }
 
     private val onItemClick = { _: View , position: Int ->
-        callback(items[position])
+        callback(filteredItems[position])
     }
 
     fun filterByText(query: String?) {
