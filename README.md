@@ -45,5 +45,23 @@ Las siguientes librerias externas fueron utilizadas para el proyecto:
 * FlexBox : ViewGroup estilo Flex (para los generos dentro del detalle)
 * YouTubeAPI : videos de youtube
 
+----------------------------------------------------------------------------------------------------------------------------------
 
-  
+Preguntas: 
+
+1. En qué consiste el principio de responsabilidad única? Cuál es su propósito?
+
+Es un principio que propone que cada "unidad funcional" (clase, modulo, funcion, componente, etc) debe tener ser responsable de una sola funcionalidad.
+Su proposito es principal es modularizar estas funcionalidades dentro dichas unidades. Esto reduce las dependencias entre funcionalidades, diminuye la probabilidad de efectos secundarios de una funcionalidad, y mejora mucho el entendimiento del codigo.
+
+2. Qué características tiene, según su opinión, un “buen” código o código limpio?
+
+Si tuviera que resumirlo de alguna forma, un buen codigo es aquel que:
+* Es fácil de entender: 
+  * sus componentes de pequeños
+  * usa nombres claros y descriptivos
+  * no es necesario revisar el codigo interno (de una funcion o clase) para entender que es lo que hace
+* Es fácil de modificar
+  * sus componentes estan desacomplados a través de interfaces e inyección de dependencia
+  * sus componentes son testeables y existen tests de unidad para los mismos ( disminuye la posibilidad de regresiones)
+
