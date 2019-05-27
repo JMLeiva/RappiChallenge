@@ -13,7 +13,6 @@
         android:layout_width="44dp"
         android:layout_height="44dp"
         android:progress="90"
-        android:layout_gravity="center"
         android:rotation="270"
         style="?android:progressBarStyleHorizontal"
         android:progressDrawable="@drawable/determinate_circleprogress"
@@ -48,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="top"
-            android:text="@string/vote_hipenation"
+            android:text="@string/vote_hypenation"
             />
 
     </LinearLayout>
