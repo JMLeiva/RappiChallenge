@@ -4,6 +4,7 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.view.*
 import android.widget.Toast
 import androidx.annotation.NonNull
@@ -164,7 +165,11 @@ class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator, Searc
             adapter.stopLoading()
         }
         else {
-            searchViewModel.advance()
+            // Delay request a bit to avoid quota excess (4 / second max)
+            Handler().postDelayed(  {
+                searchViewModel.advance()
+            }, 350)
+
         }
     }
 
