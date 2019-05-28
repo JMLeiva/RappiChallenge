@@ -69,7 +69,7 @@ Si tuviera que resumirlo de alguna forma, un buen codigo es aquel que:
   
   ----------------------------------------------------------------------------------------------------------------------------------
   
-  Notas para quien evalúe: 
+Notas para quien evalúe: 
   
   Dada la magnitud del exámen y el tiempo que le pude dedicar, prioricé algunas cosas por sobre otras, y por lo tanto soy conciente que habria algunas cosas que se podrñian mejorar:
   
