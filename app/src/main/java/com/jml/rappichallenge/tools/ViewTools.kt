@@ -6,8 +6,8 @@ import android.util.TypedValue
 
 
 object ViewTools {
-    fun pxToDp(dp : Float, context: Context) : Float {
-        val r = context.getResources()
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics() )
+    fun pxToDp(dp : Int, context: Context) : Int {
+        val r = context.resources
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), r.displayMetrics).toInt()
     }
 }

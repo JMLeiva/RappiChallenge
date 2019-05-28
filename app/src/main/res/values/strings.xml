@@ -19,7 +19,7 @@
     <string name="error_dialog_title">Warning!</string>
     <string name="not_found_dialog_body">The content you\'re looking for has not been found</string>
     <string name="sort_by">Sort by:</string>
-    <string name="vote_hypenation">%</string>
+    <string name="vote_hyphenation">%</string>
     <string name="menu_search">Search</string>
     <string name="search_hint">Search title name</string>
 </resources>

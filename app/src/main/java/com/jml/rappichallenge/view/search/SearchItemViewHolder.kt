@@ -3,7 +3,6 @@ package com.jml.rappichallenge.view.search
 import android.content.Context
 import android.view.View
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.TextView
 
 import com.jmleiva.pagedrecyclerview.PagedViewHolder
@@ -14,47 +13,49 @@ import com.jml.rappichallenge.models.entities.Movie
 import com.jml.rappichallenge.models.enums.PictureSize
 import com.jml.rappichallenge.models.tools.DateHelper
 import com.jml.rappichallenge.tools.PictureUrlBuilder
-import com.jml.rappichallenge.tools.VoteViewHelper
+import com.jml.rappichallenge.view.custom.VoteView
 
 class SearchItemViewHolder internal constructor(itemView: View, val callback: (View, Int) -> Unit) : PagedViewHolder(itemView), View.OnClickListener  {
 
-    var iv_cover : ImageView
-    var tv_title : TextView
-    var pb_vote : ProgressBar
-    var tv_vote_value : TextView
-    var tv_releaseDate : TextView
-    var tv_description : TextView
+    private var ivCover : ImageView
+    private var tvTitle : TextView
+    private var flVoteContainer : VoteView
+    private var tvReleaseDate : TextView
+    private var tvDescription : TextView
 
     init {
         itemView.setOnClickListener(this)
-        iv_cover = itemView.findViewById(R.id.iv_cover)
-        tv_title = itemView.findViewById(R.id.tv_title)
-        pb_vote = itemView.findViewById(R.id.pb_vote)
-        tv_vote_value = itemView.findViewById(R.id.tv_vote_value)
-        tv_releaseDate = itemView.findViewById(R.id.tv_releaseDate)
-        tv_description = itemView.findViewById(R.id.tv_description)
+        ivCover = itemView.findViewById(R.id.iv_cover)
+        tvTitle = itemView.findViewById(R.id.tv_title)
+        flVoteContainer = itemView.findViewById(R.id.fl_vote_container)
+        tvReleaseDate = itemView.findViewById(R.id.tv_releaseDate)
+        tvDescription = itemView.findViewById(R.id.tv_description)
 
     }
 
 
     fun setup(context: Context, item: Movie) {
-        tv_title.text = item.title
+        tvTitle.text = item.title
 
-        VoteViewHelper.setupVoteViewForMovie(item, pb_vote, tv_vote_value, context)
+        if(item.voteCount > 0 && item.voteAverage != null) {
+            flVoteContainer.setProgress((item.voteAverage!! * 10f).toInt(), false)
+        } else {
+            flVoteContainer.setProgress(-1, false)
+        }
 
         if (item.releaseDate != null) {
-            tv_releaseDate.text = DateHelper.formatDate(item.releaseDate!!)
+            tvReleaseDate.text = DateHelper.formatDate(item.releaseDate!!)
         } else {
-            tv_releaseDate.visibility = View.INVISIBLE
+            tvReleaseDate.visibility = View.INVISIBLE
         }
-        tv_description.text = item.overview
+        tvDescription.text = item.overview
 
         GlideApp.with(context)
                 .load(PictureUrlBuilder.buildPosterUrl(item.posterPath, PictureSize.Poster.w185))
                 .centerCrop()
                 .placeholder(R.drawable.ic_photo_96dp)
                 .error(R.drawable.ic_broken_image_96dp)
-                .into(iv_cover)
+                .into(ivCover)
     }
 
     override fun onClick(v: View) {

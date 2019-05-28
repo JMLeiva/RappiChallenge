@@ -19,7 +19,7 @@
     <string name="error_dialog_title">Atención!</string>
     <string name="not_found_dialog_body">El contenido que buscas no fue encontrado</string>
     <string name="sort_by">Ordenar por:</string>
-    <string name="vote_hipenation">%</string>
+    <string name="vote_hyphenation">%</string>
     <string name="menu_search">Buscar</string>
     <string name="search_hint">Buscar título</string>
 </resources>

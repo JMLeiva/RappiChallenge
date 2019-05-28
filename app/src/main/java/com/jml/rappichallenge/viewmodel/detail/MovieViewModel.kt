@@ -7,7 +7,7 @@ import androidx.lifecycle.Transformations
 import com.jml.rappichallenge.models.entities.Movie
 import com.jml.rappichallenge.models.enums.ErrorCode
 import com.jml.rappichallenge.models.enums.RequestState
-import com.jml.rappichallenge.models.other.GetByIdQuery
+import com.jml.rappichallenge.viewmodel.search.GetByIdQuery
 import com.jml.rappichallenge.repository.ErrorWrapper
 import com.jml.rappichallenge.repository.movies.MoviesRepository
 import com.jml.rappichallenge.tools.ConnectionManager

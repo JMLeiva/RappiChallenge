@@ -26,11 +26,15 @@ class MovieSearchResponse internal constructor(internal val dto: MovieSearchResp
     val result: List<Movie>
         get() = dto.results?.map {movieDTO -> Movie(movieDTO) } ?: ArrayList()
 
+    private var lastPageStartIndex : Int = 0
+
     fun append(data: MovieSearchResponse?) {
 
         if (data == null) {
             return
         }
+
+        lastPageStartIndex = data.result.size
 
         dto.page = data.page
         dto.total_pages = data.pagesCount

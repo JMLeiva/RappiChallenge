@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import com.jml.rappichallenge.models.entities.Movie
 import com.jml.rappichallenge.models.entities.MovieSearchResponse
 import com.jml.rappichallenge.models.entities.VideoResponse
-import com.jml.rappichallenge.models.other.GetByIdQuery
-import com.jml.rappichallenge.models.other.GetMoviesQuery
+import com.jml.rappichallenge.viewmodel.search.GetByIdQuery
+import com.jml.rappichallenge.viewmodel.search.GetMoviesQuery
 import com.jml.rappichallenge.repository.BaseRepository
 import com.jml.rappichallenge.repository.ResponseWrapper
 import com.jml.rappichallenge.repository.api.MdbApi
