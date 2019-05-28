@@ -145,8 +145,6 @@ class VoteView(context: Context?, attrs: AttributeSet?) : ConstraintLayout(conte
 
     fun setProgress(progress : Int, animate : Boolean) {
 
-        if (progress == _progress) { return }
-
         if (animate && progress in 0..100) {
 
             val valueAnimator = ValueAnimator.ofInt(0, progress)

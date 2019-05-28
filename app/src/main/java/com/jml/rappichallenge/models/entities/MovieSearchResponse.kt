@@ -20,31 +20,10 @@ class MovieSearchResponse internal constructor(internal val dto: MovieSearchResp
     val pagesCount: Int
         get() = dto.total_pages
 
-    val isFinished: Boolean
-        get() = page == pagesCount
-
     val result: List<Movie>
         get() = dto.results?.map {movieDTO -> Movie(movieDTO) } ?: ArrayList()
 
     private var lastPageStartIndex : Int = 0
-
-    fun append(data: MovieSearchResponse?) {
-
-        if (data == null) {
-            return
-        }
-
-        lastPageStartIndex = data.result.size
-
-        dto.page = data.page
-        dto.total_pages = data.pagesCount
-        dto.total_results = data.totalResultCount
-        if (data.dto.results != null) {
-            dto.results?.addAll(data.dto.results!!)
-        }
-    }
-
-
 
     class Deserializer : JsonDeserializer<MovieSearchResponse> {
         @Throws(JsonParseException::class)

@@ -9,6 +9,7 @@ import com.jml.rappichallenge.BuildConfig
 import com.jml.rappichallenge.R
 import com.jml.rappichallenge.models.entities.Video
 import android.util.Log
+import android.widget.FrameLayout
 
 
 class VideoViewHolder(itemView: View, val callback: (View, Int) -> Unit) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
@@ -20,7 +21,10 @@ class VideoViewHolder(itemView: View, val callback: (View, Int) -> Unit) : Recyc
     private var currentVideo : Video? = null
     private var mustPrepareLoaded : Boolean = true
 
+    private var background : FrameLayout
+
     init {
+        background = itemView.findViewById(R.id.fl_background)
         itemView.setOnClickListener(this)
         prepareLoader()
     }
@@ -32,7 +36,7 @@ class VideoViewHolder(itemView: View, val callback: (View, Int) -> Unit) : Recyc
             override fun onInitializationSuccess(thumbnailView: YouTubeThumbnailView?, thumbnailLoader: YouTubeThumbnailLoader?) {
                 loader = thumbnailLoader
                 if (currentVideo != null) {
-                    loader!!.setVideo(currentVideo!!.key)
+                    setThumbnail(loader!!, currentVideo!!.key)
                 }
             }
 
@@ -46,10 +50,14 @@ class VideoViewHolder(itemView: View, val callback: (View, Int) -> Unit) : Recyc
         currentVideo = video
 
         if (loader != null) {
-            loader!!.setVideo(video.key)
+            setThumbnail(loader!!, video.key)
         } else if(mustPrepareLoaded) {
             prepareLoader()
         }
+    }
+
+    private fun setThumbnail(loader: YouTubeThumbnailLoader, key : String) {
+        loader.setVideo(key)
     }
 
     override fun onClick(v: View?) {

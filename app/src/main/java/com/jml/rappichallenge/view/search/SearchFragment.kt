@@ -89,8 +89,6 @@ class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator, Searc
     override fun setupUI() {
         super.setupUI()
 
-
-
         adapter = SearchAdapter(context!!) { movie -> onItemClick(movie) }
         adapter.paginator = this
         adapter.filterByText(searchText)
@@ -155,7 +153,7 @@ class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator, Searc
     }
 
     private fun refreshListWithResults() {
-        if( adapter.setItems(searchViewModel.data!!.result) ) {
+        if( adapter.setItems(searchViewModel.data!!) ) {
 
             if (pendingScrollToPosition != null) {
                 rv_list.scrollToPosition(pendingScrollToPosition!!)
@@ -180,7 +178,7 @@ class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator, Searc
         if (searchViewModel.entityListStateMutableLiveData.value == EntityListState.NoConnection &&
                 !connectionManager.isInternetConnected) { return false }
 
-        val result = searchViewModel.searchResponse
+        val result = searchViewModel.data
         val finished = result?.isFinished ?: false
         return !finished
     }

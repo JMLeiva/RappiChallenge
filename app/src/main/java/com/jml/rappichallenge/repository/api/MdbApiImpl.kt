@@ -129,7 +129,7 @@ class MdbApiImpl @Inject constructor() : MdbApi {
 
 
     override fun getMovie(id : Int, language: Language, callback: ApiCallback<Movie>) {
-        val call = service.getMovie(id, MdbRoutes.LanguageCode.fromLanguage(language), BuildConfig.MdbApiKey)
+        val call = service.getMovie(id, BuildConfig.MdbApiKey, MdbRoutes.LanguageCode.fromLanguage(language))
         makeCall(call, callback)
     }
 

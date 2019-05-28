@@ -5,11 +5,13 @@
               android:layout_height="match_parent">
 
     <FrameLayout
+        android:id="@+id/fl_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="4dp"
-        android:background="@color/medium_grey">
+        android:padding="1dp"
+        android:background="@drawable/video_bkg_drawable">
 
         <com.google.android.youtube.player.YouTubeThumbnailView
             android:id="@+id/yv_thumbnail"
