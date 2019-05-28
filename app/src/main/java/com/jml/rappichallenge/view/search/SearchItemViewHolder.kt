@@ -34,11 +34,11 @@ class SearchItemViewHolder internal constructor(itemView: View, val callback: (V
     }
 
 
-    fun setup(context: Context, item: Movie) {
+    fun setup(context: Context, item: Movie, animate : Boolean) {
         tvTitle.text = item.title
 
         if(item.voteCount > 0 && item.voteAverage != null) {
-            flVoteContainer.setProgress((item.voteAverage!! * 10f).toInt(), false)
+            flVoteContainer.setProgress((item.voteAverage!! * 10f).toInt(), animate)
         } else {
             flVoteContainer.setProgress(-1, false)
         }

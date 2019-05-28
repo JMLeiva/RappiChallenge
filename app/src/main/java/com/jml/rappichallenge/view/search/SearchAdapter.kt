@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.jml.rappichallenge.R
 import com.jml.rappichallenge.models.entities.Movie
+import com.jml.rappichallenge.viewmodel.search.SearchMovieModel
 import com.jmleiva.pagedrecyclerview.PagedRecyclerViewAdapter
 import com.jmleiva.pagedrecyclerview.PagedViewHolder
 
@@ -13,6 +14,7 @@ class SearchAdapter(private var context: Context, private var callback: (Movie) 
 
     private var items: MutableList<Movie> = ArrayList()
     private var textFilter: String? = null
+    private var lastAnimatedItem : Int = 0
 
     private val filteredItems: List<Movie>
         get() = filtered(items)
@@ -32,15 +34,15 @@ class SearchAdapter(private var context: Context, private var callback: (Movie) 
 
     // returns if seting this items has any effect (aka, wont be filtered)
     // this is a workaroud to avoid an ugly animation glitch when a new page is loaded and then filtered completely
-    fun setItems(list: List<Movie>) : Boolean {
+    fun setItems(model : SearchMovieModel) : Boolean {
 
-        val allFiltered = newListIsAllFiltered(list)
+        val allFiltered = filtered(model.lastPage).isEmpty()
 
         this.items.clear()
-        this.items.addAll(list)
-
+        this.items.addAll(model.list)
 
         if(!allFiltered){
+            lastAnimatedItem = model.lastPageStart
             notifyDataSetChanged()
             return true
         }
@@ -74,7 +76,8 @@ class SearchAdapter(private var context: Context, private var callback: (Movie) 
     }
 
     override fun onBindNormalViewHolder(holder: SearchItemViewHolder?, position: Int) {
-        holder?.setup(context, filteredItems[position])
+        holder?.setup(context, filteredItems[position], position >= lastAnimatedItem)
+        lastAnimatedItem = Math.max(lastAnimatedItem, position)
     }
 
     private val onItemClick = { _: View , position: Int ->
