@@ -25,7 +25,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <include layout="@layout/vote_layout"
+        <com.jml.rappichallenge.view.custom.VoteView
              android:id="@id/fl_vote_container"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"

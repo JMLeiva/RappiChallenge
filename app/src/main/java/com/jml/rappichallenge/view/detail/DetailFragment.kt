@@ -22,7 +22,6 @@ import com.jml.rappichallenge.models.enums.RequestState
 import com.jml.rappichallenge.models.enums.VideoSite
 import com.jml.rappichallenge.models.tools.DateHelper
 import com.jml.rappichallenge.tools.PictureUrlBuilder
-import com.jml.rappichallenge.tools.VoteViewHelper
 import com.jml.rappichallenge.view.base.BaseFragment
 import com.jml.rappichallenge.view.youtube.YouTubeActivity
 import com.jml.rappichallenge.viewmodel.common.EntityListState
@@ -30,7 +29,6 @@ import com.jml.rappichallenge.viewmodel.common.EntityState
 import com.jml.rappichallenge.viewmodel.detail.MovieViewModel
 import com.jml.rappichallenge.viewmodel.detail.VideoListViewModel
 import kotlinx.android.synthetic.main.detail_fragment.*
-import kotlinx.android.synthetic.main.vote_layout.*
 import javax.inject.Inject
 
 class DetailFragment : BaseFragment() {
@@ -141,7 +139,7 @@ class DetailFragment : BaseFragment() {
         super.setupUI()
         videoAdapter = VideosAdapter(context!!) { video -> goToVideoSreen(video)}
         sv_contents.visibility = View.GONE
-        iv_back.setOnClickListener { activity?.finish() }
+        b_back.setOnClickListener { activity?.finish() }
     }
 
     private fun showLoading() {
@@ -197,8 +195,11 @@ class DetailFragment : BaseFragment() {
             tv_date.visibility = View.INVISIBLE
         }
 
-
-        VoteViewHelper.setupVoteViewForMovie(movie, pb_vote, tv_vote_value, context!!)
+        if(movie.voteCount > 0 && movie.voteAverage != null) {
+            fl_vote_container.setProgress((movie.voteAverage!! * 10f).toInt(), true)
+        } else {
+            fl_vote_container.setProgress(-1, false)
+        }
     }
 
     private fun setupGenres(movie : Movie) {

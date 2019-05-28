@@ -15,6 +15,13 @@
         <item name="goIcon">@drawable/ic_send_24dp</item>
     </style>
 
+    <style name="CircularDeterminateProgressBar" parent="android:Widget.ProgressBar.Horizontal">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/determinate_circleprogress</item>
+        <item name="android:minHeight">44dip</item>
+        <item name="android:maxHeight">44dip</item>
+    </style>
+
     <style name="Text_Title">
         <item name="android:textSize">32sp</item>
         <item name="android:textStyle">bold</item>

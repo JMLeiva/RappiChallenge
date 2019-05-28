@@ -7,7 +7,6 @@ import androidx.lifecycle.Transformations
 import com.jml.rappichallenge.models.entities.MovieSearchResponse
 import com.jml.rappichallenge.models.enums.RequestState
 import com.jml.rappichallenge.models.enums.Sorting
-import com.jml.rappichallenge.models.other.GetMoviesQuery
 import com.jml.rappichallenge.repository.movies.MoviesRepository
 import com.jml.rappichallenge.tools.ConnectionManager
 import com.jml.rappichallenge.viewmodel.common.EntityListState

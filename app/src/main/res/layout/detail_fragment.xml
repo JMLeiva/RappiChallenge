@@ -42,16 +42,21 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@drawable/ic_photo_96dp"/>
 
-
-            <ImageView
-                android:id="@+id/iv_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_baseline_arrow_back_white_24px"
+            <FrameLayout
+                android:id="@+id/b_back"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="16dp"/>
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:src="@drawable/ic_baseline_arrow_back_white_24px"
+                    android:padding="12dp"
+                    android:layout_gravity="center"/>
+            </FrameLayout>
 
             <View
                 android:layout_width="0dp"
@@ -61,14 +66,14 @@
                 app:layout_constraintBottom_toBottomOf="@id/iv_backdrop"
                 android:background="@drawable/backdrop_gradient"/>
 
-            <include layout="@layout/vote_layout"
-                     android:id="@+id/fl_vote_container"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     app:layout_constraintBottom_toBottomOf="@id/iv_backdrop"
-                     app:layout_constraintEnd_toEndOf="parent"
-                     android:layout_marginEnd="16dp"
-                     android:layout_marginBottom="16dp"/>
+            <com.jml.rappichallenge.view.custom.VoteView
+                 android:id="@+id/fl_vote_container"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 app:layout_constraintBottom_toBottomOf="@id/iv_backdrop"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 android:layout_marginEnd="16dp"
+                 android:layout_marginBottom="16dp"/>
 
             <TextView
                 android:id="@+id/tv_title"

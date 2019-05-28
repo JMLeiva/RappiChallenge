@@ -1,4 +1,4 @@
-package com.jml.rappichallenge.models.other
+package com.jml.rappichallenge.viewmodel.search
 
 import android.os.Parcel
 import android.os.Parcelable
