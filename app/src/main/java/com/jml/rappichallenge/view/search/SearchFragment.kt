@@ -196,16 +196,13 @@ class SearchFragment : BaseFragment(), PagedRecyclerViewAdapter.Paginator, Searc
     }
 
     private fun showResults() {
-        //include_welcome.setVisibility(View.GONE)
-       // include_empty.setVisibility(View.GONE)
         rv_list.visibility = View.VISIBLE
-        swiperefresh.visibility = View.VISIBLE
+        ll_resultsContainer.visibility = View.VISIBLE
         hideNoConnection()
-        //activity.invalidateOptionsMenu()
     }
 
     private fun hideResults() {
-        swiperefresh.visibility = View.GONE
+        ll_resultsContainer.visibility = View.GONE
     }
 
     override fun showNoConnection() {
