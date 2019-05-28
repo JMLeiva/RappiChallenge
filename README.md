@@ -10,7 +10,6 @@ La estructura del proyecto se puede resumir facilmente como:
   * DTOs : POJOs que solo poseen informacion luego utilizada por las Entities
   * Entities : Objectos del negocio. Exponen convientemente la informacion de sus respectivos DTOs
   * Enums : Enums del sistema
-  * Other: elementos utilizados para modelar entidades que no son directamente de negocio
   * Tools: herramientas y helpers para manipular las entidades de forma ajena al negocio
 * Repository 
   * API : Implementacion e interfaces de la API consumida por la App
