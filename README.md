@@ -33,6 +33,9 @@ Toda la informacion intercambiada de esta manera es encapsulada por las entidade
 Estos DTOs son los que se obtienen desde los diferentes Repositorios, con los cuales se construyen las entidades del Model.
 Ej: (Movie <- MovieDTO)
 
+Importante: 
+
+Puesto que uno de los puntos pedidos era poder hacer búsquedas Offline por categoría, lo que hace la APP actualmente, es hacer una busqeuda por categoria normal, y filtrar localmente los resultados. Esto produce que la busqueda sea lenta (puede requerir varias paginas hasta tener un resultado). Ademas, para no superar la quota maxima de requests de la API (alrededor de 4 requests por segundo), cada pagina que es totalmente filtrada por la busqueda (es decir, no aporta resultados), dispara un pequeño delay de 350ms para justamente evitar superar este límite.
 
 
 Las siguientes librerias externas fueron utilizadas para el proyecto:
@@ -63,4 +66,21 @@ Si tuviera que resumirlo de alguna forma, un buen codigo es aquel que:
 * Es fácil de modificar
   * sus componentes estan desacomplados a través de interfaces e inyección de dependencia
   * sus componentes son testeables y existen tests de unidad para los mismos ( disminuye la posibilidad de regresiones)
+  
+  ----------------------------------------------------------------------------------------------------------------------------------
+  
+  Notas para quien evalúe: 
+  
+  Dada la magnitud del exámen y el tiempo que le pude dedicar, prioricé algunas cosas por sobre otras, y por lo tanto soy conciente que habria algunas cosas que se podrñian mejorar:
+  
+* Contenido
+  * Agregado de busqueda de series
+  * Mostrar mas información de las películas en el detalle
+  * Busqueda ONLINE (usando la API correspondiente)
+* UI
+  * Mutiples columnas en resultado de listing en landscape (o con tablets)
+  * Transiciones con "Shared Views" del listing al detalle
+* Otros
+  * Unit Testing
 
+ 
